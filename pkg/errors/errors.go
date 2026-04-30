@@ -44,7 +44,6 @@ func InternalServerError(message string) *AppError {
 	return New(http.StatusInternalServerError, message)
 }
 
-
 var (
 	ErrTransactionNotFound     = NotFound("transaction not found")
 	ErrAccountNotFound         = NotFound("account not found")
@@ -54,4 +53,6 @@ var (
 	ErrSameAccount             = BadRequest("source and destination account cannot be the same")
 	ErrInvalidTransactionType  = BadRequest("invalid transaction type")
 	ErrTransactionAlreadyFinal = Conflict("transaction is already in a final state")
+
+	ErrInvalidPIN              = Unauthorized("PIN tidak valid")
 )
