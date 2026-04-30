@@ -58,18 +58,34 @@ const userColsWithAuth = `
 	is_personalization_enabled, is_active,
 	created_at, updated_at`
 
+func nullStrPtr(s *string) interface{} {
+	if s == nil {
+		return nil
+	}
+	return *s
+}
+
+func toStrPtr(ns sql.NullString) *string {
+	if ns.Valid {
+		return &ns.String
+	}
+	return nil
+}
+
 func scanUser(row rowScanner) (*domain.User, error) {
 	var u domain.User
 	var dob sql.NullTime
 
+	var name, phone, occupation, segment sql.NullString
+
 	err := row.Scan(
 		&u.ID,
-		&u.Name,
+		&name,
 		&u.Email,
-		&u.Phone,
+		&phone,
 		&dob,
-		&u.Occupation,
-		&u.Segment,
+		&occupation,
+		&segment,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
 		&u.CreatedAt,
@@ -78,6 +94,11 @@ func scanUser(row rowScanner) (*domain.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	u.Name = toStrPtr(name)
+	u.Phone = toStrPtr(phone)
+	u.Occupation = toStrPtr(occupation)
+	u.Segment = toStrPtr(segment)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
@@ -90,15 +111,17 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	var u domain.User
 	var dob sql.NullTime
 
+	var name, phone, pin, occupation, segment sql.NullString
+
 	err := row.Scan(
 		&u.ID,
-		&u.Name,
+		&name,
 		&u.Email,
-		&u.Phone,
-		&u.PIN,
+		&phone,
+		&pin,
 		&dob,
-		&u.Occupation,
-		&u.Segment,
+		&occupation,
+		&segment,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
 		&u.CreatedAt,
@@ -107,6 +130,12 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	u.Name = toStrPtr(name)
+	u.Phone = toStrPtr(phone)
+	u.PIN = toStrPtr(pin)
+	u.Occupation = toStrPtr(occupation)
+	u.Segment = toStrPtr(segment)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
@@ -119,16 +148,18 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	var u domain.User
 	var dob sql.NullTime
 
+	var name, phone, pin, occupation, segment sql.NullString
+
 	err := row.Scan(
 		&u.ID,
-		&u.Name,
+		&name,
 		&u.Email,
-		&u.Phone,
+		&phone,
 		&u.Password,
-		&u.PIN,
+		&pin,
 		&dob,
-		&u.Occupation,
-		&u.Segment,
+		&occupation,
+		&segment,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
 		&u.CreatedAt,
@@ -137,6 +168,12 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	u.Name = toStrPtr(name)
+	u.Phone = toStrPtr(phone)
+	u.PIN = toStrPtr(pin)
+	u.Occupation = toStrPtr(occupation)
+	u.Segment = toStrPtr(segment)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
@@ -169,13 +206,13 @@ func (r *userRepository) Create(ctx context.Context, u *domain.User) error {
 	result, err := r.db.ExecContext(
 		ctx,
 		query,
-		u.Name,
+		nullStrPtr(u.Name),
 		u.Email,
-		u.Phone,
+		nullStrPtr(u.Phone),
 		u.Password,
-		u.PIN,
+		nullStrPtr(u.PIN),
 		dob,
-		nullStr(u.Occupation),
+		nullStrPtr(u.Occupation),
 		u.IsPersonalizationEnabled,
 	)
 
@@ -254,7 +291,7 @@ func (r *userRepository) FindByEmail(ctx context.Context, email string) (*domain
 }
 
 func (r *userRepository) FindByPhone(ctx context.Context, phone string) (*domain.User, error) {
-	q := `SELECT ` + userColsWithAuth + ` FROM users WHERE phone = ? AND deleted_at IS NULL`
+	q := `SELECT ` + userCols + ` FROM users WHERE phone = ? AND deleted_at IS NULL`
 
 	row := r.db.QueryRowContext(ctx, q, phone)
 
@@ -315,8 +352,8 @@ func (r *userRepository) UpdateProfile(ctx context.Context, id uint64, u *domain
 	res, err := r.db.ExecContext(
 		ctx,
 		q,
-		u.Name,
-		nullStr(u.Occupation),
+		nullStrPtr(u.Name),
+		nullStrPtr(u.Occupation),
 		dob,
 		id,
 	)

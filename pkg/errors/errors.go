@@ -48,11 +48,17 @@ var (
 	ErrTransactionNotFound     = NotFound("transaction not found")
 	ErrAccountNotFound         = NotFound("account not found")
 	ErrUserNotFound            = NotFound("user not found")
+
 	ErrInsufficientBalance     = BadRequest("insufficient balance")
 	ErrAccountInactive         = BadRequest("account is inactive")
 	ErrSameAccount             = BadRequest("source and destination account cannot be the same")
 	ErrInvalidTransactionType  = BadRequest("invalid transaction type")
 	ErrTransactionAlreadyFinal = Conflict("transaction is already in a final state")
 
-	ErrInvalidPIN              = Unauthorized("PIN tidak valid")
+	ErrEmailAlreadyUsed  = Conflict("email sudah digunakan")
+	ErrPhoneAlreadyUsed  = Conflict("nomor HP sudah digunakan")
+	ErrInvalidCredentials = Unauthorized("email/phone atau PIN salah")
+	ErrInvalidPIN        = Unauthorized("PIN tidak valid")
+	ErrUserInactive      = Forbidden("user tidak aktif")
+	ErrInvalidRefreshToken = Unauthorized("refresh token tidak valid")
 )

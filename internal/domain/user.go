@@ -4,14 +4,14 @@ import "time"
 
 type User struct {
 	ID                       uint64
-	Name                     string
+	Name                     *string
 	Email                    string
-	Phone                    string
-	PIN						 string
+	Phone                    *string
+	PIN						 *string
 	Password                 string  
 	DateOfBirth              *time.Time
-	Occupation               string
-	Segment                  string
+	Occupation               *string
+	Segment                  *string
 	IsPersonalizationEnabled bool
 	IsActive                 bool
 	CreatedAt                time.Time

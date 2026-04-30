@@ -86,7 +86,7 @@ func (m *AuthMiddleware) RequirePIN() fiber.Handler {
 		}
 
 		// compare hash
-		if err := bcrypt.CompareHashAndPassword([]byte(user.PIN), []byte(body.PIN)); err != nil {
+		if err := bcrypt.CompareHashAndPassword([]byte(*user.PIN), []byte(body.PIN)); err != nil {
 			return apperrors.ErrInvalidPIN
 		}
 
