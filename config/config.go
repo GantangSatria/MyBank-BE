@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"log"
+	"net/url"
 	"os"
 	"strconv"
 
@@ -59,7 +60,7 @@ func Load() *Config {
 			Timezone: getEnv("DB_TIMEZONE", "Asia/Jakarta"),
 		},
 		JWT: JWTConfig{
-			Secret:     getEnv("JWT_SECRET", "changeme"),
+			Secret:     getEnv("JWT_SECRET", ""),
 			ExpiryHour: expiryHour,
 			RefreshExpiryHour: refreshExpiryHour,
 		},
@@ -69,8 +70,12 @@ func Load() *Config {
 func (c *DBConfig) DSN() string {
 	return fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=%s",
-		c.User, c.Password, c.Host, c.Port, c.Name,
-		c.Timezone,
+		c.User,
+		url.QueryEscape(c.Password),
+		c.Host,
+		c.Port,
+		c.Name,
+		url.QueryEscape(c.Timezone),
 	)
 }
 

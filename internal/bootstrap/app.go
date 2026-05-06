@@ -11,6 +11,11 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/recover"
 
 	"github.com/GantangSatria/MyBank-BE/config"
+	"github.com/GantangSatria/MyBank-BE/internal/handler"
+	"github.com/GantangSatria/MyBank-BE/internal/middleware"
+	"github.com/GantangSatria/MyBank-BE/internal/repository"
+	"github.com/GantangSatria/MyBank-BE/internal/routes"
+	"github.com/GantangSatria/MyBank-BE/internal/service"
 )
 
 type App struct {
@@ -37,6 +42,27 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 
 	app.Get("/health", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"status": "ok", "app": cfg.App.Name})
+	})
+
+	// di
+
+	// Repository
+	userRepo := repository.NewUserRepository(db)
+
+	// Service
+	authService := service.NewAuthService(userRepo, cfg)
+
+	// Middleware
+	authMiddleware := middleware.NewAuthMiddleware(cfg.JWT.Secret, userRepo, )
+
+	// Handler
+	authHandler := handler.NewAuthHandler(authService)
+
+	// Routes
+	routes.SetupRoutes(&routes.RouteConfig{
+		App:            app,
+		AuthHandler:    authHandler,
+		AuthMiddleware: authMiddleware,
 	})
 
 	return &App{Fiber: app, Config: cfg, DB: db}
