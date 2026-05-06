@@ -33,6 +33,7 @@ type DBConfig struct {
 type JWTConfig struct {
 	Secret     string
 	ExpiryHour int
+	RefreshExpiryHour int
 }
 
 func Load() *Config {
@@ -41,6 +42,7 @@ func Load() *Config {
 	}
 
 	expiryHour, _ := strconv.Atoi(getEnv("JWT_EXPIRY_HOUR", "24"))
+	refreshExpiryHour, _ := strconv.Atoi(getEnv("JWT_REFRESH_EXPIRY_HOUR", "168" ))
 
 	return &Config{
 		App: AppConfig{
@@ -59,6 +61,7 @@ func Load() *Config {
 		JWT: JWTConfig{
 			Secret:     getEnv("JWT_SECRET", "changeme"),
 			ExpiryHour: expiryHour,
+			RefreshExpiryHour: refreshExpiryHour,
 		},
 	}
 }
