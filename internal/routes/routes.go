@@ -13,7 +13,13 @@ type RouteConfig struct {
 	AuthMiddleware *middleware.AuthMiddleware
 }
 
-func SetupRoutes(cfg *RouteConfig) {
-	RegisterAuthRoutes(cfg.App, cfg.AuthHandler, cfg.AuthMiddleware)
+func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
+	api := app.Group("/api/v1")
+
+	api.Get("", func (c fiber.Ctx) error  {
+		return c.JSON(fiber.Map{"MyBank-BE": "Semoga Ready to use"})
+	})
+
+	RegisterAuthRoutes(api, cfg.AuthHandler, cfg.AuthMiddleware)
 
 }

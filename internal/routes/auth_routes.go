@@ -7,11 +7,11 @@ import (
 	"github.com/GantangSatria/MyBank-BE/internal/middleware"
 )
 
-func RegisterAuthRoutes(app *fiber.App, h *handler.AuthHandler, auth *middleware.AuthMiddleware) {
-	v1 := app.Group("/api/v1/auth")
+func RegisterAuthRoutes(router fiber.Router,  h *handler.AuthHandler, authMiddleware *middleware.AuthMiddleware) {
+	auth := router.Group("/auth")
 
-	v1.Post("/register", h.Register)
-	v1.Post("/login", h.Login)
-	v1.Post("/refresh", h.RefreshToken)
+	auth.Post("/register", h.Register)
+	auth.Post("/login", h.Login)
+	auth.Post("/refresh", h.RefreshToken)
 
 }

@@ -59,7 +59,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	authHandler := handler.NewAuthHandler(authService)
 
 	// Routes
-	routes.SetupRoutes(&routes.RouteConfig{
+	routes.SetupRoutes(app, &routes.RouteConfig{
 		App:            app,
 		AuthHandler:    authHandler,
 		AuthMiddleware: authMiddleware,
