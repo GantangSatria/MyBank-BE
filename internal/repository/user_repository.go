@@ -21,6 +21,7 @@ type UserRepository interface {
 	ExistsByPhone(ctx context.Context, phone string) (bool, error)
 
 	UpdateProfile(ctx context.Context, id uint64, u *domain.User) error
+	UpdatePhone(ctx context.Context, id uint64, u *domain.User) error
 	UpdatePIN(ctx context.Context, id uint64, hashedPIN string) error
 	UpdatePassword(ctx context.Context, id uint64, hashedPassword string) error
 	UpdatePersonalizationConsent(ctx context.Context, id uint64, enabled bool) error
@@ -405,6 +406,18 @@ func (r *userRepository) UpdatePassword(ctx context.Context, id uint64, hashedPa
 	}
 
 	return nil
+}
+
+func (r *userRepository) UpdatePhone(ctx context.Context, id uint64, u *domain.User) error {
+    q := `UPDATE users SET phone = ?, updated_at = NOW() WHERE id = ? AND deleted_at IS NULL`
+    res, err := r.db.ExecContext(ctx, q, nullStrPtr(u.Phone), id)
+    if err != nil {
+        return apperrors.InternalServerError("gagal update nomor HP")
+    }
+    if ra, _ := res.RowsAffected(); ra == 0 {
+        return apperrors.ErrUserNotFound
+    }
+    return nil
 }
 
 func (r *userRepository) UpdatePersonalizationConsent(ctx context.Context, id uint64, enabled bool) error {
