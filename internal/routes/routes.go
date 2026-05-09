@@ -10,16 +10,21 @@ import (
 type RouteConfig struct {
 	App            *fiber.App
 	AuthHandler    *handler.AuthHandler
+	UserHandler	   *handler.UserHandler
 	AuthMiddleware *middleware.AuthMiddleware
 }
 
 func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
+	app.Get("/", func (c fiber.Ctx) error {
+		return c.JSON(fiber.Map{"MyBank-BE": "Pakai prefix /api/v1"})
+	})
+
 	api := app.Group("/api/v1")
 
-	api.Get("", func (c fiber.Ctx) error  {
+	api.Get("/", func (c fiber.Ctx) error  {
 		return c.JSON(fiber.Map{"MyBank-BE": "Semoga Ready to use"})
 	})
 
 	RegisterAuthRoutes(api, cfg.AuthHandler, cfg.AuthMiddleware)
-
+	RegisterUserRoutes(api, cfg.UserHandler, *cfg.AuthMiddleware)
 }

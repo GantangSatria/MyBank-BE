@@ -51,17 +51,20 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 
 	// Service
 	authService := service.NewAuthService(userRepo, cfg)
+	userService := service.NewUserService(userRepo)
 
 	// Middleware
 	authMiddleware := middleware.NewAuthMiddleware(cfg.JWT.Secret, userRepo, )
 
 	// Handler
 	authHandler := handler.NewAuthHandler(authService)
+	userHandler := handler.NewUserHandler(userService)
 
 	// Routes
 	routes.SetupRoutes(app, &routes.RouteConfig{
 		App:            app,
 		AuthHandler:    authHandler,
+		UserHandler:    userHandler,
 		AuthMiddleware: authMiddleware,
 	})
 

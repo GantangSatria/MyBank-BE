@@ -26,7 +26,8 @@ type AuthService interface {
 	Register(ctx context.Context, req *request.RegisterRequest) (*response.TokenResponse, error)
 	Login(ctx context.Context, req *request.LoginRequest) (*response.TokenResponse, error)
 	RefreshToken(ctx context.Context, req *request.RefreshTokenRequest) (*response.TokenResponse, error)
-	//ChangePIN(ctx context.Context, userID uint64, req *request.ChangePINRequest) error
+	ChangePassword(ctx context.Context, userID uint64, req *request.ChangePasswordRequest) error
+	ChangePIN(ctx context.Context, userID uint64, req *request.ChangePINRequest) error
 }
 
 type authService struct {
@@ -173,4 +174,48 @@ func (s *authService) sign(user *domain.User, subject string, exp time.Time) (st
 
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, claims).
 		SignedString([]byte(s.cfg.JWT.Secret))
+}
+
+func (s *authService) ChangePassword(ctx context.Context, userID uint64, req *request.ChangePasswordRequest) error {
+	user, err := s.userRepo.FindByIDWithAuth(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.OldPassword)); err != nil {
+		return apperrors.BadRequest("password lama tidak sesuai")
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), 12)
+	if err != nil {
+		return apperrors.InternalServerError("gagal memproses password baru")
+	}
+
+	return s.userRepo.UpdatePassword(ctx, userID, string(hashed))
+}
+
+func (s *authService) ChangePIN(ctx context.Context, userID uint64, req *request.ChangePINRequest) error {
+	if req.OldPIN == req.NewPIN {
+		return apperrors.BadRequest("PIN baru tidak boleh sama dengan PIN lama")
+	}
+
+	user, err := s.userRepo.FindByIDWithPIN(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	if user.PIN == nil {
+		return apperrors.BadRequest("PIN belum diatur, gunakan endpoint setup PIN")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(*user.PIN), []byte(req.OldPIN)); err != nil {
+		return apperrors.ErrInvalidPIN
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(req.NewPIN), 12)
+	if err != nil {
+		return apperrors.InternalServerError("gagal memproses PIN baru")
+	}
+
+	return s.userRepo.UpdatePIN(ctx, userID, string(hashed))
 }

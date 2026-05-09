@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 
 	// "github.com/GantangSatria/MyBank-BE/internal/middleware"
+	"github.com/GantangSatria/MyBank-BE/internal/middleware"
 	"github.com/GantangSatria/MyBank-BE/internal/service"
 	"github.com/GantangSatria/MyBank-BE/pkg/dto/request"
 	"github.com/GantangSatria/MyBank-BE/pkg/dto/response"
@@ -71,6 +72,44 @@ func (h *AuthHandler) RefreshToken(c fiber.Ctx) error {
 		return err
 	}
 	return c.JSON(response.Success("token diperbarui", result))
+}
+
+// ChangePassword godoc
+// PUT /api/v1/auth/password
+func (h *AuthHandler) ChangePassword(c fiber.Ctx) error {
+	userID := middleware.GetUserID(c)
+
+	var req request.ChangePasswordRequest
+	if err := c.Bind().JSON(&req); err != nil {
+		return apperrors.BadRequest("body request tidak valid")
+	}
+	if err := utils.ValidateStruct(&req); err != nil {
+		return apperrors.BadRequest(err.Error())
+	}
+
+	if err := h.svc.ChangePassword(c.Context(), userID, &req); err != nil {
+		return err
+	}
+	return c.JSON(response.Success("password berhasil diubah", nil))
+}
+
+// ChangePIN godoc
+// PUT /api/v1/auth/change-pin
+func (h *AuthHandler) ChangePIN(c fiber.Ctx) error {
+	userID := middleware.GetUserID(c)
+
+	var req request.ChangePINRequest
+	if err := c.Bind().JSON(&req); err != nil {
+		return apperrors.BadRequest("body request tidak valid")
+	}
+	if err := utils.ValidateStruct(&req); err != nil {
+		return apperrors.BadRequest(err.Error())
+	}
+
+	if err := h.svc.ChangePIN(c.Context(), userID, &req); err != nil {
+		return err
+	}
+	return c.JSON(response.Success("PIN berhasil diubah", nil))
 }
 
 // ChangePIN godoc
