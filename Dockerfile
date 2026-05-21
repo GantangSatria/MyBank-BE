@@ -5,6 +5,8 @@ WORKDIR /app
 # install dependencies
 RUN apk add --no-cache git
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 # copy go mod files
 COPY go.mod go.sum ./
 RUN go mod download
