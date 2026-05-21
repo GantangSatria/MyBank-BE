@@ -12,6 +12,8 @@ type User struct {
 	DateOfBirth              *time.Time
 	Occupation               *string
 	Segment                  *string
+	MonthlyIncome            float64
+	ABGroup                  string
 	IsPersonalizationEnabled bool
 	IsActive                 bool
 	CreatedAt                time.Time
