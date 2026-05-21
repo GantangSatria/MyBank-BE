@@ -1,0 +1,981 @@
+basePath: /api/v1
+definitions:
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest:
+    properties:
+      new_pin:
+        type: string
+      old_pin:
+        type: string
+    required:
+    - new_pin
+    - old_pin
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest:
+    properties:
+      new_password:
+        minLength: 6
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      description:
+        maxLength: 255
+        type: string
+      destination_account_number:
+        type: string
+      destination_bank_code:
+        type: string
+      destination_name:
+        type: string
+      merchant_category:
+        maxLength: 100
+        type: string
+      merchant_location:
+        maxLength: 200
+        type: string
+      merchant_name:
+        maxLength: 200
+        type: string
+      note:
+        maxLength: 255
+        type: string
+      pin:
+        type: string
+      type:
+        enum:
+        - TRANSFER
+        - PAYMENT
+        - TOPUP
+        - WITHDRAW
+        - DEPOSIT
+        - QRIS
+        type: string
+    required:
+    - account_id
+    - amount
+    - pin
+    - type
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest:
+    properties:
+      date_of_birth:
+        type: string
+      email:
+        maxLength: 100
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      occupation:
+        maxLength: 100
+        type: string
+      password:
+        maxLength: 100
+        minLength: 6
+        type: string
+      phone:
+        maxLength: 15
+        minLength: 10
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest:
+    properties:
+      feature_name:
+        maxLength: 100
+        type: string
+    required:
+    - feature_name
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest:
+    properties:
+      enabled:
+        type: boolean
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest:
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest:
+    properties:
+      date_of_birth:
+        type: string
+      name:
+        maxLength: 100
+        minLength: 2
+        type: string
+      occupation:
+        maxLength: 100
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base:
+    properties:
+      data: {}
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta'
+      success:
+        type: boolean
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse:
+    properties:
+      merchant_category:
+        type: string
+      total_amount:
+        type: number
+      transaction_count:
+        type: integer
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse:
+    properties:
+      click_count:
+        type: integer
+      feature_name:
+        type: string
+      last_clicked:
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse:
+    properties:
+      merchant_category:
+        type: string
+      merchant_name:
+        type: string
+      total_amount:
+        type: number
+      transaction_count:
+        type: integer
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse:
+    properties:
+      consent_status:
+        type: boolean
+      data_used:
+        description: e.g. "Riwayat transaksi, Preferensi kategori"
+        type: string
+      reason:
+        type: string
+      recommendation_id:
+        type: integer
+      title:
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      priority:
+        type: integer
+      reason:
+        description: 'explainable: "Karena Anda sering bertransaksi di E-Wallet"'
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse:
+    properties:
+      category_breakdown:
+        items:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse'
+        type: array
+      fav_category:
+        type: string
+      fav_method:
+        type: string
+      top_merchants:
+        items:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse'
+        type: array
+      total_spend:
+        type: number
+      total_transactions:
+        type: integer
+      weekly_comparison:
+        items:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse'
+        type: array
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse'
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse:
+    properties:
+      amount:
+        type: number
+      balance_after:
+        type: number
+      balance_before:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      destination_account_number:
+        type: string
+      destination_bank_code:
+        type: string
+      destination_name:
+        type: string
+      fee:
+        type: number
+      id:
+        type: integer
+      is_recommended:
+        type: boolean
+      merchant_category:
+        type: string
+      merchant_location:
+        type: string
+      merchant_name:
+        type: string
+      note:
+        type: string
+      recommendation_id:
+        type: integer
+      reference_number:
+        type: string
+      status:
+        type: string
+      transacted_at:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse:
+    properties:
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      is_personalization_enabled:
+        type: boolean
+      name:
+        type: string
+      occupation:
+        type: string
+      phone:
+        type: string
+      segment:
+        type: string
+    type: object
+  github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse:
+    properties:
+      category:
+        type: string
+      current_week_spend:
+        type: number
+      previous_week_spend:
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: REST API for MyBank Application
+  title: MyBank API
+  version: "1.0"
+paths:
+  /auth/change-pin:
+    put:
+      consumes:
+      - application/json
+      description: Change user PIN
+      parameters:
+      - description: Change PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Change PIN
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return access & refresh tokens
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      summary: Login user
+      tags:
+      - auth
+  /auth/password:
+    put:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: Change Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Change password
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get a new access token using a refresh token
+      parameters:
+      - description: Refresh Token Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      summary: Refresh access token
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      summary: Register a new user
+      tags:
+      - auth
+  /features/click:
+    post:
+      consumes:
+      - application/json
+      description: Record a user's click on a mobile banking feature
+      parameters:
+      - description: Feature Click Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Track feature click
+      tags:
+      - features
+  /features/clicks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all features clicked by the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get feature clicks
+      tags:
+      - features
+  /recommendations:
+    get:
+      consumes:
+      - application/json
+      description: Get personalized recommendations for the logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get user recommendations
+      tags:
+      - recommendations
+  /recommendations/{id}/click:
+    post:
+      consumes:
+      - application/json
+      description: Record a click on a specific recommendation
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Track recommendation click
+      tags:
+      - recommendations
+  /recommendations/{id}/reason:
+    get:
+      consumes:
+      - application/json
+      description: Get the reason why a specific recommendation was shown to the user
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get recommendation reason
+      tags:
+      - recommendations
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get a paginated list of transactions for the logged-in user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get transactions
+      tags:
+      - transactions
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction (transfer, payment, topup, withdraw, deposit,
+        qris)
+      parameters:
+      - description: Create Transaction Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Create a new transaction
+      tags:
+      - transactions
+  /transactions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific transaction by ID
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get transaction detail
+      tags:
+      - transactions
+  /transactions/summary:
+    get:
+      consumes:
+      - application/json
+      description: Get a summary of user spending including total spend, favourite
+        category, weekly comparisons, and top merchants
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get spending summary
+      tags:
+      - transactions
+  /users/me:
+    delete:
+      consumes:
+      - application/json
+      description: Soft deletes the currently logged in user account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Soft delete user account
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get profile of the currently logged in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Update profile details of the currently logged in user
+      parameters:
+      - description: Update Profile Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - users
+  /users/me/personalization:
+    patch:
+      consumes:
+      - application/json
+      description: Enable or disable data personalization for the user
+      parameters:
+      - description: Update Personalization Consent Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update personalization consent
+      tags:
+      - users
+  /users/me/phone:
+    patch:
+      consumes:
+      - application/json
+      description: Update phone number of the currently logged in user
+      parameters:
+      - description: Update Phone Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update user phone number
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -48,10 +48,16 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 
 	// Repository
 	userRepo := repository.NewUserRepository(db)
+	txRepo := repository.NewTransactionRepository(db)
+	recRepo := repository.NewRecommendationRepository(db)
+	fcRepo := repository.NewFeatureClickRepository(db)
+	auditRepo := repository.NewAuditLogRepository(db)
 
 	// Service
 	authService := service.NewAuthService(userRepo, cfg)
 	userService := service.NewUserService(userRepo)
+	txService := service.NewTransactionService(txRepo, auditRepo)
+	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo)
 
 	// Middleware
 	authMiddleware := middleware.NewAuthMiddleware(cfg.JWT.Secret, userRepo, )
@@ -59,13 +65,17 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	// Handler
 	authHandler := handler.NewAuthHandler(authService)
 	userHandler := handler.NewUserHandler(userService)
+	txHandler := handler.NewTransactionHandler(txService)
+	recHandler := handler.NewRecommendationHandler(recService)
 
 	// Routes
 	routes.SetupRoutes(app, &routes.RouteConfig{
-		App:            app,
-		AuthHandler:    authHandler,
-		UserHandler:    userHandler,
-		AuthMiddleware: authMiddleware,
+		App:                   app,
+		AuthHandler:           authHandler,
+		UserHandler:           userHandler,
+		TransactionHandler:    txHandler,
+		RecommendationHandler: recHandler,
+		AuthMiddleware:        authMiddleware,
 	})
 
 	return &App{Fiber: app, Config: cfg, DB: db}

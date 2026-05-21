@@ -21,7 +21,16 @@ func NewAuthHandler(svc service.AuthService) *AuthHandler {
 }
 
 // Register godoc
-// POST /api/v1/auth/register
+// @Summary Register a new user
+// @Description Register a new user with email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body request.RegisterRequest true "Register Request"
+// @Success 201 {object} response.Base{data=response.TokenResponse}
+// @Failure 400 {object} response.Base
+// @Failure 409 {object} response.Base
+// @Router /auth/register [post]
 func (h *AuthHandler) Register(c fiber.Ctx) error {
 	var req request.RegisterRequest
 	if err := c.Bind().JSON(&req); err != nil {
@@ -39,7 +48,16 @@ func (h *AuthHandler) Register(c fiber.Ctx) error {
 }
 
 // Login godoc
-// POST /api/v1/auth/login
+// @Summary Login user
+// @Description Authenticate user and return access & refresh tokens
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body request.LoginRequest true "Login Request"
+// @Success 200 {object} response.Base{data=response.TokenResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /auth/login [post]
 func (h *AuthHandler) Login(c fiber.Ctx) error {
 	var req request.LoginRequest
 	if err := c.Bind().JSON(&req); err != nil {
@@ -57,7 +75,16 @@ func (h *AuthHandler) Login(c fiber.Ctx) error {
 }
 
 // RefreshToken godoc
-// POST /api/v1/auth/refresh
+// @Summary Refresh access token
+// @Description Get a new access token using a refresh token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body request.RefreshTokenRequest true "Refresh Token Request"
+// @Success 200 {object} response.Base{data=response.TokenResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /auth/refresh [post]
 func (h *AuthHandler) RefreshToken(c fiber.Ctx) error {
 	var req request.RefreshTokenRequest
 	if err := c.Bind().JSON(&req); err != nil {
@@ -75,7 +102,17 @@ func (h *AuthHandler) RefreshToken(c fiber.Ctx) error {
 }
 
 // ChangePassword godoc
-// PUT /api/v1/auth/password
+// @Summary Change password
+// @Description Change user password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.ChangePasswordRequest true "Change Password Request"
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /auth/password [put]
 func (h *AuthHandler) ChangePassword(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -94,7 +131,17 @@ func (h *AuthHandler) ChangePassword(c fiber.Ctx) error {
 }
 
 // ChangePIN godoc
-// PUT /api/v1/auth/change-pin
+// @Summary Change PIN
+// @Description Change user PIN
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.ChangePINRequest true "Change PIN Request"
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /auth/change-pin [put]
 func (h *AuthHandler) ChangePIN(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
