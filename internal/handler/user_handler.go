@@ -20,7 +20,15 @@ func NewUserHandler(svc service.UserService) *UserHandler {
 }
 
 // GetMe godoc
-// GET /api/v1/users/me
+// @Summary Get current user profile
+// @Description Get profile of the currently logged in user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} response.Base{data=response.UserResponse}
+// @Failure 401 {object} response.Base
+// @Router /users/me [get]
 func (h *UserHandler) GetMe(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -32,7 +40,17 @@ func (h *UserHandler) GetMe(c fiber.Ctx) error {
 }
 
 // UpdateProfile godoc
-// PATCH /api/v1/users/me
+// @Summary Update user profile
+// @Description Update profile details of the currently logged in user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.UpdateProfileRequest true "Update Profile Request"
+// @Success 200 {object} response.Base{data=response.UserResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /users/me [patch]
 func (h *UserHandler) UpdateProfile(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -52,7 +70,18 @@ func (h *UserHandler) UpdateProfile(c fiber.Ctx) error {
 }
 
 // UpdatePhone godoc
-// PATCH /api/v1/users/me/phone
+// @Summary Update user phone number
+// @Description Update phone number of the currently logged in user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.UpdatePhoneRequest true "Update Phone Request"
+// @Success 200 {object} response.Base{data=response.UserResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Failure 409 {object} response.Base
+// @Router /users/me/phone [patch]
 func (h *UserHandler) UpdatePhone(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -72,7 +101,17 @@ func (h *UserHandler) UpdatePhone(c fiber.Ctx) error {
 }
 
 // UpdatePersonalizationConsent godoc
-// PATCH /api/v1/users/me/personalization
+// @Summary Update personalization consent
+// @Description Enable or disable data personalization for the user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.UpdatePersonalizationRequest true "Update Personalization Consent Request"
+// @Success 200 {object} response.Base{data=response.UserResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /users/me/personalization [patch]
 func (h *UserHandler) UpdatePersonalizationConsent(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -92,7 +131,15 @@ func (h *UserHandler) UpdatePersonalizationConsent(c fiber.Ctx) error {
 }
 
 // DeleteAccount godoc
-// DELETE /api/v1/users/me
+// @Summary Soft delete user account
+// @Description Soft deletes the currently logged in user account
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /users/me [delete]
 func (h *UserHandler) DeleteAccount(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 

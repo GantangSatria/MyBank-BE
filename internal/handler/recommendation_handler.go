@@ -22,7 +22,15 @@ func NewRecommendationHandler(svc service.RecommendationService) *Recommendation
 }
 
 // GetRecommendations godoc
-// GET /api/v1/recommendations
+// @Summary Get user recommendations
+// @Description Get personalized recommendations for the logged-in user
+// @Tags recommendations
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} response.Base{data=[]response.RecommendationResponse}
+// @Failure 401 {object} response.Base
+// @Router /recommendations [get]
 func (h *RecommendationHandler) GetRecommendations(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -34,7 +42,18 @@ func (h *RecommendationHandler) GetRecommendations(c fiber.Ctx) error {
 }
 
 // TrackClick godoc
-// POST /api/v1/recommendations/:id/click
+// @Summary Track recommendation click
+// @Description Record a click on a specific recommendation
+// @Tags recommendations
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Recommendation ID"
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Failure 403 {object} response.Base
+// @Router /recommendations/{id}/click [post]
 func (h *RecommendationHandler) TrackClick(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -50,7 +69,18 @@ func (h *RecommendationHandler) TrackClick(c fiber.Ctx) error {
 }
 
 // GetReason godoc
-// GET /api/v1/recommendations/:id/reason — "Kenapa saya melihat ini?"
+// @Summary Get recommendation reason
+// @Description Get the reason why a specific recommendation was shown to the user
+// @Tags recommendations
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Recommendation ID"
+// @Success 200 {object} response.Base{data=response.RecommendationReasonResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Failure 403 {object} response.Base
+// @Router /recommendations/{id}/reason [get]
 func (h *RecommendationHandler) GetReason(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -67,7 +97,17 @@ func (h *RecommendationHandler) GetReason(c fiber.Ctx) error {
 }
 
 // TrackFeatureClick godoc
-// POST /api/v1/features/click — track klik fitur mobile banking
+// @Summary Track feature click
+// @Description Record a user's click on a mobile banking feature
+// @Tags features
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.TrackFeatureClickRequest true "Feature Click Request"
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /features/click [post]
 func (h *RecommendationHandler) TrackFeatureClick(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -86,7 +126,15 @@ func (h *RecommendationHandler) TrackFeatureClick(c fiber.Ctx) error {
 }
 
 // GetFeatureClicks godoc
-// GET /api/v1/features/clicks — get semua klik fitur user
+// @Summary Get feature clicks
+// @Description Get a list of all features clicked by the user
+// @Tags features
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} response.Base{data=[]response.FeatureClickResponse}
+// @Failure 401 {object} response.Base
+// @Router /features/clicks [get]
 func (h *RecommendationHandler) GetFeatureClicks(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 

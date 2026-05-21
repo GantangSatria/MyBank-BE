@@ -22,7 +22,17 @@ func NewTransactionHandler(svc service.TransactionService) *TransactionHandler {
 }
 
 // CreateTransaction godoc
-// POST /api/v1/transactions
+// @Summary Create a new transaction
+// @Description Create a new transaction (transfer, payment, topup, withdraw, deposit, qris)
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.CreateTransactionRequest true "Create Transaction Request"
+// @Success 201 {object} response.Base{data=response.TransactionResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /transactions [post]
 func (h *TransactionHandler) CreateTransaction(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -42,7 +52,17 @@ func (h *TransactionHandler) CreateTransaction(c fiber.Ctx) error {
 }
 
 // GetTransactions godoc
-// GET /api/v1/transactions
+// @Summary Get transactions
+// @Description Get a paginated list of transactions for the logged-in user
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param page query int false "Page number" default(1)
+// @Param limit query int false "Number of items per page" default(10)
+// @Success 200 {object} response.Base{data=[]response.TransactionResponse}
+// @Failure 401 {object} response.Base
+// @Router /transactions [get]
 func (h *TransactionHandler) GetTransactions(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -68,7 +88,18 @@ func (h *TransactionHandler) GetTransactions(c fiber.Ctx) error {
 }
 
 // GetTransactionDetail godoc
-// GET /api/v1/transactions/:id
+// @Summary Get transaction detail
+// @Description Get details of a specific transaction by ID
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path int true "Transaction ID"
+// @Success 200 {object} response.Base{data=response.TransactionResponse}
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Router /transactions/{id} [get]
 func (h *TransactionHandler) GetTransactionDetail(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 
@@ -85,7 +116,15 @@ func (h *TransactionHandler) GetTransactionDetail(c fiber.Ctx) error {
 }
 
 // GetSpendingSummary godoc
-// GET /api/v1/transactions/summary
+// @Summary Get spending summary
+// @Description Get a summary of user spending including total spend, favourite category, weekly comparisons, and top merchants
+// @Tags transactions
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Success 200 {object} response.Base{data=response.SpendingSummaryResponse}
+// @Failure 401 {object} response.Base
+// @Router /transactions/summary [get]
 func (h *TransactionHandler) GetSpendingSummary(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 

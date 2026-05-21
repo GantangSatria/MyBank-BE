@@ -5,6 +5,9 @@ import (
 
 	"github.com/GantangSatria/MyBank-BE/internal/handler"
 	"github.com/GantangSatria/MyBank-BE/internal/middleware"
+
+	fiberSwagger "github.com/gofiber/contrib/v3/swaggo"
+	_ "github.com/GantangSatria/MyBank-BE/docs"
 )
 
 type RouteConfig struct {
@@ -21,6 +24,11 @@ func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
 		return c.JSON(fiber.Map{"MyBank-BE": "Pakai prefix /api/v1"})
 	})
 
+	// Swagger route
+	app.Get("/swagger/*", fiberSwagger.New())
+
+
+
 	api := app.Group("/api/v1")
 
 	api.Get("/", func (c fiber.Ctx) error  {
@@ -31,4 +39,4 @@ func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
 	RegisterUserRoutes(api, cfg.UserHandler, *cfg.AuthMiddleware)
 	RegisterTransactionRoutes(api, cfg.TransactionHandler, *cfg.AuthMiddleware)
 	RegisterRecommendationRoutes(api, cfg.RecommendationHandler, *cfg.AuthMiddleware)
-}
+}
