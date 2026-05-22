@@ -52,12 +52,14 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	recRepo := repository.NewRecommendationRepository(db)
 	fcRepo := repository.NewFeatureClickRepository(db)
 	auditRepo := repository.NewAuditLogRepository(db)
+	merchantRepo := repository.NewMerchantRepository(db)
 
 	// Service
 	authService := service.NewAuthService(userRepo, cfg)
 	userService := service.NewUserService(userRepo)
 	txService := service.NewTransactionService(txRepo, auditRepo)
 	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo)
+	merchantService := service.NewMerchantService(merchantRepo)
 
 	// Middleware
 	authMiddleware := middleware.NewAuthMiddleware(cfg.JWT.Secret, userRepo, )
@@ -67,6 +69,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	userHandler := handler.NewUserHandler(userService)
 	txHandler := handler.NewTransactionHandler(txService)
 	recHandler := handler.NewRecommendationHandler(recService)
+	merchantHandler := handler.NewMerchantHandler(merchantService)
 
 	// Routes
 	routes.SetupRoutes(app, &routes.RouteConfig{
@@ -75,8 +78,10 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 		UserHandler:           userHandler,
 		TransactionHandler:    txHandler,
 		RecommendationHandler: recHandler,
+		MerchantHandler:       merchantHandler,
 		AuthMiddleware:        authMiddleware,
 	})
+
 
 	return &App{Fiber: app, Config: cfg, DB: db}
 }

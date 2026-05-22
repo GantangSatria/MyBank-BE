@@ -6,16 +6,40 @@ import (
 )
 
 func MapUserToResponse(u *domain.User) response.UserResponse {
-
-	return response.UserResponse{
-		ID:       u.ID,
-		Name:     u.Name,
-		Email:    u.Email,
-		Phone:    u.Phone,
-		Segment:  u.Segment,
-		IsActive: u.IsActive,
+	resp := response.UserResponse{
+		ID:                       u.ID,
+		Name:                     u.Name,
+		Email:                    u.Email,
+		Phone:                    u.Phone,
+		Gender:                   u.Gender,
+		Occupation:               derefStr(u.Occupation),
+		MaritalStatus:            u.MaritalStatus,
+		Segment:                  u.Segment,
+		MonthlyIncomeRange:       u.MonthlyIncomeRange,
+		IsPersonalizationEnabled: u.IsPersonalizationEnabled,
+		IsActive:                 u.IsActive,
+		CreatedAt:                u.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
+
+	if u.DateOfBirth != nil {
+		dob := u.DateOfBirth.Format("2006-01-02")
+		resp.DateOfBirth = &dob
+	}
+	if u.LastLoginAt != nil {
+		lla := u.LastLoginAt.Format("2006-01-02 15:04:05")
+		resp.LastLoginAt = &lla
+	}
+
+	return resp
 }
+
+func derefStr(s *string) string {
+	if s == nil {
+		return ""
+	}
+	return *s
+}
+
 
 func MapTransactionToResponse(t *domain.Transaction) response.TransactionResponse {
 	return response.TransactionResponse{
@@ -33,6 +57,7 @@ func MapTransactionToResponse(t *domain.Transaction) response.TransactionRespons
 		MerchantName:             t.MerchantName,
 		MerchantCategory:         t.MerchantCategory,
 		MerchantLocation:         t.MerchantLocation,
+		Channel:                  t.Channel,
 		Description:              t.Description,
 		Note:                     t.Note,
 		IsRecommended:            t.IsRecommended,
@@ -93,4 +118,25 @@ func MapAuditLogToResponse(al *domain.AuditLog) response.AuditLogResponse {
 		Detail:    al.Detail,
 		CreatedAt: al.CreatedAt.Format("2006-01-02 15:04:05"),
 	}
-}
+}
+
+func MapMerchantToResponse(m *domain.Merchant) response.MerchantResponse {
+	return response.MerchantResponse{
+		ID:               m.ID,
+		MerchantID:       m.MerchantID,
+		MerchantName:     m.MerchantName,
+		MerchantCategory: m.MerchantCategory,
+		MerchantCity:     m.MerchantCity,
+		MerchantType:     m.MerchantType,
+		MerchantStatus:   m.MerchantStatus,
+	}
+}
+
+func MapMerchantsToResponse(merchants []domain.Merchant) []response.MerchantResponse {
+	result := make([]response.MerchantResponse, len(merchants))
+	for i, m := range merchants {
+		result[i] = MapMerchantToResponse(&m)
+	}
+	return result
+}
+

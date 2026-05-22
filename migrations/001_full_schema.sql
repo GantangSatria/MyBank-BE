@@ -6,11 +6,34 @@
 -- 1. Tambah kolom baru di tabel users (jika tabel sudah ada)
 -- ============================================================
 ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS gender VARCHAR(5) AFTER password,
+  ADD COLUMN IF NOT EXISTS marital_status VARCHAR(20) AFTER occupation,
   ADD COLUMN IF NOT EXISTS monthly_income DECIMAL(15,2) DEFAULT 0 AFTER segment,
-  ADD COLUMN IF NOT EXISTS ab_group VARCHAR(20) DEFAULT 'control' AFTER monthly_income;
+  ADD COLUMN IF NOT EXISTS monthly_income_range VARCHAR(30) AFTER monthly_income,
+  ADD COLUMN IF NOT EXISTS ab_group VARCHAR(20) DEFAULT 'control' AFTER monthly_income_range,
+  ADD COLUMN IF NOT EXISTS last_login_at DATETIME AFTER is_active;
 
 
--- 2. Buat tabel transactions
+-- 2. Buat tabel merchants
+-- ============================================================
+CREATE TABLE IF NOT EXISTS merchants (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  merchant_id VARCHAR(20) NOT NULL UNIQUE,
+  merchant_name VARCHAR(200) NOT NULL,
+  merchant_category VARCHAR(100) NOT NULL,
+  merchant_city VARCHAR(100),
+  merchant_type ENUM('offline', 'online', 'hybrid') NOT NULL DEFAULT 'offline',
+  merchant_status ENUM('aktif', 'nonaktif') NOT NULL DEFAULT 'aktif',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  INDEX idx_merchants_category (merchant_category),
+  INDEX idx_merchants_city (merchant_city),
+  INDEX idx_merchants_status (merchant_status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 3. Buat tabel transactions
 -- ============================================================
 CREATE TABLE IF NOT EXISTS transactions (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -28,10 +51,12 @@ CREATE TABLE IF NOT EXISTS transactions (
   destination_bank_code VARCHAR(20),
   destination_name VARCHAR(200),
 
+  merchant_id_ref BIGINT UNSIGNED,
   merchant_name VARCHAR(200),
   merchant_category VARCHAR(100),
   merchant_location VARCHAR(200),
 
+  channel VARCHAR(50),
   description VARCHAR(255),
   note VARCHAR(255),
   fail_reason VARCHAR(255),
@@ -48,19 +73,21 @@ CREATE TABLE IF NOT EXISTS transactions (
   INDEX idx_transactions_type (type),
   INDEX idx_transactions_transacted_at (transacted_at),
   INDEX idx_transactions_merchant_category (merchant_category),
+  INDEX idx_transactions_channel (channel),
   INDEX idx_transactions_user_date (user_id, transacted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 3. Buat tabel accounts (jika belum ada)
+-- 4. Buat tabel accounts (jika belum ada)
 -- ============================================================
 CREATE TABLE IF NOT EXISTS accounts (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id BIGINT UNSIGNED NOT NULL,
   account_number VARCHAR(50) NOT NULL UNIQUE,
-  account_type VARCHAR(50) NOT NULL DEFAULT 'SAVINGS',
+  account_type VARCHAR(50) NOT NULL DEFAULT 'Saving',
   balance DECIMAL(15,2) DEFAULT 0,
   currency VARCHAR(10) DEFAULT 'IDR',
+  branch VARCHAR(100),
   is_active BOOLEAN DEFAULT TRUE,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -69,7 +96,7 @@ CREATE TABLE IF NOT EXISTS accounts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 4. Buat tabel feature_clicks
+-- 5. Buat tabel feature_clicks
 -- ============================================================
 CREATE TABLE IF NOT EXISTS feature_clicks (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -85,7 +112,7 @@ CREATE TABLE IF NOT EXISTS feature_clicks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 5. Buat tabel recommendations
+-- 6. Buat tabel recommendations
 -- ============================================================
 CREATE TABLE IF NOT EXISTS recommendations (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -106,7 +133,7 @@ CREATE TABLE IF NOT EXISTS recommendations (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 6. Buat tabel recommendation_clicks
+-- 7. Buat tabel recommendation_clicks
 -- ============================================================
 CREATE TABLE IF NOT EXISTS recommendation_clicks (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -119,7 +146,7 @@ CREATE TABLE IF NOT EXISTS recommendation_clicks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 7. Buat tabel audit_logs
+-- 8. Buat tabel audit_logs
 -- ============================================================
 CREATE TABLE IF NOT EXISTS audit_logs (
   id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -133,3 +160,16 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   INDEX idx_audit_logs_action (action),
   INDEX idx_audit_logs_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================
+-- Seed Data: Merchants (sesuai dummy data)
+-- ============================================================
+INSERT IGNORE INTO merchants (merchant_id, merchant_name, merchant_category, merchant_city, merchant_type, merchant_status) VALUES
+('M001', 'Kopi Kenangan', 'F&B', 'Jakarta', 'offline', 'aktif'),
+('M002', 'Tokopedia', 'E-commerce', 'Jakarta', 'online', 'aktif'),
+('M003', 'PLN', 'Utilities', 'Jakarta', 'hybrid', 'aktif'),
+('M004', 'Garuda Indonesia', 'Travel', 'Jakarta', 'online', 'aktif'),
+('M005', 'XXI Cinema', 'Entertainment', 'Jakarta', 'offline', 'aktif'),
+('M006', 'Indomaret', 'Retail', 'Surabaya', 'offline', 'aktif'),
+('M007', 'BPJS Kesehatan', 'Healthcare', 'Jakarta', 'online', 'aktif');

@@ -13,9 +13,10 @@ import (
 type RouteConfig struct {
 	App                   *fiber.App
 	AuthHandler           *handler.AuthHandler
-	UserHandler	          *handler.UserHandler
+	UserHandler           *handler.UserHandler
 	TransactionHandler    *handler.TransactionHandler
 	RecommendationHandler *handler.RecommendationHandler
+	MerchantHandler       *handler.MerchantHandler
 	AuthMiddleware        *middleware.AuthMiddleware
 }
 
@@ -39,4 +40,5 @@ func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
 	RegisterUserRoutes(api, cfg.UserHandler, *cfg.AuthMiddleware)
 	RegisterTransactionRoutes(api, cfg.TransactionHandler, *cfg.AuthMiddleware)
 	RegisterRecommendationRoutes(api, cfg.RecommendationHandler, *cfg.AuthMiddleware)
+	RegisterMerchantRoutes(api, cfg.MerchantHandler, *cfg.AuthMiddleware)
 }

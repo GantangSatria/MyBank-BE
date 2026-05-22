@@ -385,6 +385,313 @@
                 }
             }
         },
+        "/merchants": {
+            "get": {
+                "description": "Get a list of all merchants",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Get all merchants",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new merchant entry",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Create a new merchant",
+                "parameters": [
+                    {
+                        "description": "Create Merchant Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/category": {
+            "get": {
+                "description": "Get all active merchants filtered by category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Get merchants by category",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Merchant Category (e.g. F\u0026B, Retail)",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update merchant details by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Update a merchant",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Merchant DB ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Merchant Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a merchant by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Delete a merchant",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Merchant DB ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    }
+                }
+            }
+        },
+        "/merchants/{merchant_id}": {
+            "get": {
+                "description": "Get a single merchant by its merchant_id (e.g. M001)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "merchants"
+                ],
+                "summary": "Get merchant by merchant_id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Merchant ID (e.g. M001)",
+                        "name": "merchant_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                        }
+                    }
+                }
+            }
+        },
         "/recommendations": {
             "get": {
                 "security": [
@@ -1099,6 +1406,48 @@
                 }
             }
         },
+        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest": {
+            "type": "object",
+            "required": [
+                "merchant_category",
+                "merchant_id",
+                "merchant_name",
+                "merchant_type"
+            ],
+            "properties": {
+                "merchant_category": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "merchant_city": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "merchant_id": {
+                    "type": "string",
+                    "maxLength": 20
+                },
+                "merchant_name": {
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "merchant_status": {
+                    "type": "string",
+                    "enum": [
+                        "aktif",
+                        "nonaktif"
+                    ]
+                },
+                "merchant_type": {
+                    "type": "string",
+                    "enum": [
+                        "offline",
+                        "online",
+                        "hybrid"
+                    ]
+                }
+            }
+        },
         "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest": {
             "type": "object",
             "required": [
@@ -1113,6 +1462,15 @@
                 },
                 "amount": {
                     "type": "number"
+                },
+                "channel": {
+                    "type": "string",
+                    "enum": [
+                        "mobile",
+                        "QRIS",
+                        "virtual_account",
+                        "transfer"
+                    ]
                 },
                 "description": {
                     "type": "string",
@@ -1232,6 +1590,38 @@
                 }
             }
         },
+        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest": {
+            "type": "object",
+            "properties": {
+                "merchant_category": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "merchant_city": {
+                    "type": "string",
+                    "maxLength": 100
+                },
+                "merchant_name": {
+                    "type": "string",
+                    "maxLength": 200
+                },
+                "merchant_status": {
+                    "type": "string",
+                    "enum": [
+                        "aktif",
+                        "nonaktif"
+                    ]
+                },
+                "merchant_type": {
+                    "type": "string",
+                    "enum": [
+                        "offline",
+                        "online",
+                        "hybrid"
+                    ]
+                }
+            }
+        },
         "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest": {
             "type": "object",
             "properties": {
@@ -1307,6 +1697,32 @@
                     "type": "string"
                 },
                 "last_clicked": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "merchant_category": {
+                    "type": "string"
+                },
+                "merchant_city": {
+                    "type": "string"
+                },
+                "merchant_id": {
+                    "type": "string"
+                },
+                "merchant_name": {
+                    "type": "string"
+                },
+                "merchant_status": {
+                    "type": "string"
+                },
+                "merchant_type": {
                     "type": "string"
                 }
             }
@@ -1457,6 +1873,9 @@
                 "balance_before": {
                     "type": "number"
                 },
+                "channel": {
+                    "type": "string"
+                },
                 "created_at": {
                     "type": "string"
                 },
@@ -1522,6 +1941,9 @@
                 "email": {
                     "type": "string"
                 },
+                "gender": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1530,6 +1952,15 @@
                 },
                 "is_personalization_enabled": {
                     "type": "boolean"
+                },
+                "last_login_at": {
+                    "type": "string"
+                },
+                "marital_status": {
+                    "type": "string"
+                },
+                "monthly_income_range": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
