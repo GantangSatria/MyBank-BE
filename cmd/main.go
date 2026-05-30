@@ -3,7 +3,7 @@ package main
 // @title MyBank API
 // @version 1.0
 // @description REST API for MyBank Application
-// @host mybank-be.fly.dev/:8080
+// @host mybank-be.fly.dev
 // @BasePath /api/v1
 // @securityDefinitions.apikey BearerAuth
 // @in header
