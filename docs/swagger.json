@@ -34,7 +34,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest"
+                            "$ref": "#/definitions/request.ChangePINRequest"
                         }
                     }
                 ],
@@ -42,19 +42,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -80,7 +80,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest"
+                            "$ref": "#/definitions/request.LoginRequest"
                         }
                     }
                 ],
@@ -90,13 +90,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -106,13 +106,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -143,7 +143,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest"
+                            "$ref": "#/definitions/request.ChangePasswordRequest"
                         }
                     }
                 ],
@@ -151,19 +151,70 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/pin/setup": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Set user PIN for the first time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Setup PIN",
+                "parameters": [
+                    {
+                        "description": "Set PIN Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SetPINRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -189,7 +240,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest"
+                            "$ref": "#/definitions/request.RefreshTokenRequest"
                         }
                     }
                 ],
@@ -199,13 +250,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -215,13 +266,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -247,7 +298,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest"
+                            "$ref": "#/definitions/request.RegisterRequest"
                         }
                     }
                 ],
@@ -257,13 +308,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -273,13 +324,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -310,7 +361,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest"
+                            "$ref": "#/definitions/request.TrackFeatureClickRequest"
                         }
                     }
                 ],
@@ -318,19 +369,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -360,7 +411,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -368,7 +419,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse"
+                                                "$ref": "#/definitions/response.FeatureClickResponse"
                                             }
                                         }
                                     }
@@ -379,7 +430,7 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -404,7 +455,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -412,7 +463,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                                "$ref": "#/definitions/response.MerchantResponse"
                                             }
                                         }
                                     }
@@ -446,7 +497,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest"
+                            "$ref": "#/definitions/request.CreateMerchantRequest"
                         }
                     }
                 ],
@@ -456,13 +507,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -472,13 +523,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -512,7 +563,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -520,7 +571,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                                "$ref": "#/definitions/response.MerchantResponse"
                                             }
                                         }
                                     }
@@ -563,7 +614,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest"
+                            "$ref": "#/definitions/request.UpdateMerchantRequest"
                         }
                     }
                 ],
@@ -573,13 +624,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -589,13 +640,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -630,13 +681,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -670,13 +721,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -686,7 +737,7 @@
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -716,7 +767,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -724,7 +775,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse"
+                                                "$ref": "#/definitions/response.RecommendationResponse"
                                             }
                                         }
                                     }
@@ -735,7 +786,7 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -772,25 +823,25 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -829,13 +880,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse"
+                                            "$ref": "#/definitions/response.RecommendationReasonResponse"
                                         }
                                     }
                                 }
@@ -845,19 +896,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -903,7 +954,7 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -911,7 +962,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                                "$ref": "#/definitions/response.TransactionResponse"
                                             }
                                         }
                                     }
@@ -922,7 +973,7 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -951,7 +1002,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest"
+                            "$ref": "#/definitions/request.CreateTransactionRequest"
                         }
                     }
                 ],
@@ -961,13 +1012,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                            "$ref": "#/definitions/response.TransactionResponse"
                                         }
                                     }
                                 }
@@ -977,13 +1028,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1013,13 +1064,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse"
+                                            "$ref": "#/definitions/response.SpendingSummaryResponse"
                                         }
                                     }
                                 }
@@ -1029,7 +1080,7 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1068,13 +1119,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                            "$ref": "#/definitions/response.TransactionResponse"
                                         }
                                     }
                                 }
@@ -1084,19 +1135,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1126,13 +1177,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1142,7 +1193,7 @@
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1168,13 +1219,13 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1203,7 +1254,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest"
+                            "$ref": "#/definitions/request.UpdateProfileRequest"
                         }
                     }
                 ],
@@ -1213,13 +1264,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1229,13 +1280,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1266,7 +1317,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest"
+                            "$ref": "#/definitions/request.UpdatePersonalizationRequest"
                         }
                     }
                 ],
@@ -1276,13 +1327,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1292,13 +1343,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1329,7 +1380,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest"
+                            "$ref": "#/definitions/request.UpdatePhoneRequest"
                         }
                     }
                 ],
@@ -1339,13 +1390,13 @@
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1355,19 +1406,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1375,7 +1426,7 @@
         }
     },
     "definitions": {
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest": {
+        "request.ChangePINRequest": {
             "type": "object",
             "required": [
                 "new_pin",
@@ -1390,7 +1441,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest": {
+        "request.ChangePasswordRequest": {
             "type": "object",
             "required": [
                 "new_password",
@@ -1406,7 +1457,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest": {
+        "request.CreateMerchantRequest": {
             "type": "object",
             "required": [
                 "merchant_category",
@@ -1448,7 +1499,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest": {
+        "request.CreateTransactionRequest": {
             "type": "object",
             "required": [
                 "account_id",
@@ -1517,7 +1568,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest": {
+        "request.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1532,7 +1583,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest": {
+        "request.RefreshTokenRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -1543,7 +1594,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest": {
+        "request.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1578,7 +1629,18 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest": {
+        "request.SetPINRequest": {
+            "type": "object",
+            "required": [
+                "pin"
+            ],
+            "properties": {
+                "pin": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.TrackFeatureClickRequest": {
             "type": "object",
             "required": [
                 "feature_name"
@@ -1590,7 +1652,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest": {
+        "request.UpdateMerchantRequest": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1622,7 +1684,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest": {
+        "request.UpdatePersonalizationRequest": {
             "type": "object",
             "properties": {
                 "enabled": {
@@ -1630,7 +1692,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest": {
+        "request.UpdatePhoneRequest": {
             "type": "object",
             "required": [
                 "phone"
@@ -1641,7 +1703,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest": {
+        "request.UpdateProfileRequest": {
             "type": "object",
             "properties": {
                 "date_of_birth": {
@@ -1658,7 +1720,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base": {
+        "response.Base": {
             "type": "object",
             "properties": {
                 "data": {},
@@ -1666,14 +1728,14 @@
                     "type": "string"
                 },
                 "meta": {
-                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta"
+                    "$ref": "#/definitions/response.Meta"
                 },
                 "success": {
                     "type": "boolean"
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse": {
+        "response.CategorySpendingResponse": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1687,7 +1749,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse": {
+        "response.FeatureClickResponse": {
             "type": "object",
             "properties": {
                 "click_count": {
@@ -1701,7 +1763,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse": {
+        "response.MerchantResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1727,7 +1789,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse": {
+        "response.MerchantSummaryResponse": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1744,7 +1806,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta": {
+        "response.Meta": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -1761,7 +1823,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse": {
+        "response.RecommendationReasonResponse": {
             "type": "object",
             "properties": {
                 "consent_status": {
@@ -1782,7 +1844,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse": {
+        "response.RecommendationResponse": {
             "type": "object",
             "properties": {
                 "description": {
@@ -1809,13 +1871,13 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse": {
+        "response.SpendingSummaryResponse": {
             "type": "object",
             "properties": {
                 "category_breakdown": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse"
+                        "$ref": "#/definitions/response.CategorySpendingResponse"
                     }
                 },
                 "fav_category": {
@@ -1827,7 +1889,7 @@
                 "top_merchants": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse"
+                        "$ref": "#/definitions/response.MerchantSummaryResponse"
                     }
                 },
                 "total_spend": {
@@ -1839,12 +1901,12 @@
                 "weekly_comparison": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse"
+                        "$ref": "#/definitions/response.WeeklySpendingResponse"
                     }
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse": {
+        "response.TokenResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -1857,11 +1919,11 @@
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                    "$ref": "#/definitions/response.UserResponse"
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse": {
+        "response.TransactionResponse": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -1929,7 +1991,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse": {
+        "response.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1976,7 +2038,7 @@
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse": {
+        "response.WeeklySpendingResponse": {
             "type": "object",
             "properties": {
                 "category": {

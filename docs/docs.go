@@ -40,7 +40,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest"
+                            "$ref": "#/definitions/request.ChangePINRequest"
                         }
                     }
                 ],
@@ -48,19 +48,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -86,7 +86,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest"
+                            "$ref": "#/definitions/request.LoginRequest"
                         }
                     }
                 ],
@@ -96,13 +96,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -112,13 +112,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -149,7 +149,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest"
+                            "$ref": "#/definitions/request.ChangePasswordRequest"
                         }
                     }
                 ],
@@ -157,19 +157,70 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/pin/setup": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Set user PIN for the first time",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Setup PIN",
+                "parameters": [
+                    {
+                        "description": "Set PIN Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SetPINRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -195,7 +246,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest"
+                            "$ref": "#/definitions/request.RefreshTokenRequest"
                         }
                     }
                 ],
@@ -205,13 +256,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -221,13 +272,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -253,7 +304,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest"
+                            "$ref": "#/definitions/request.RegisterRequest"
                         }
                     }
                 ],
@@ -263,13 +314,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse"
+                                            "$ref": "#/definitions/response.TokenResponse"
                                         }
                                     }
                                 }
@@ -279,13 +330,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -316,7 +367,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest"
+                            "$ref": "#/definitions/request.TrackFeatureClickRequest"
                         }
                     }
                 ],
@@ -324,19 +375,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -366,7 +417,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -374,7 +425,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse"
+                                                "$ref": "#/definitions/response.FeatureClickResponse"
                                             }
                                         }
                                     }
@@ -385,7 +436,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -410,7 +461,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -418,7 +469,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                                "$ref": "#/definitions/response.MerchantResponse"
                                             }
                                         }
                                     }
@@ -452,7 +503,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest"
+                            "$ref": "#/definitions/request.CreateMerchantRequest"
                         }
                     }
                 ],
@@ -462,13 +513,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -478,13 +529,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -518,7 +569,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -526,7 +577,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                                "$ref": "#/definitions/response.MerchantResponse"
                                             }
                                         }
                                     }
@@ -569,7 +620,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest"
+                            "$ref": "#/definitions/request.UpdateMerchantRequest"
                         }
                     }
                 ],
@@ -579,13 +630,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -595,13 +646,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -636,13 +687,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -676,13 +727,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse"
+                                            "$ref": "#/definitions/response.MerchantResponse"
                                         }
                                     }
                                 }
@@ -692,7 +743,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -722,7 +773,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -730,7 +781,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse"
+                                                "$ref": "#/definitions/response.RecommendationResponse"
                                             }
                                         }
                                     }
@@ -741,7 +792,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -778,25 +829,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -835,13 +886,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse"
+                                            "$ref": "#/definitions/response.RecommendationReasonResponse"
                                         }
                                     }
                                 }
@@ -851,19 +902,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -909,7 +960,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
@@ -917,7 +968,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                                "$ref": "#/definitions/response.TransactionResponse"
                                             }
                                         }
                                     }
@@ -928,7 +979,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -957,7 +1008,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest"
+                            "$ref": "#/definitions/request.CreateTransactionRequest"
                         }
                     }
                 ],
@@ -967,13 +1018,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                            "$ref": "#/definitions/response.TransactionResponse"
                                         }
                                     }
                                 }
@@ -983,13 +1034,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1019,13 +1070,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse"
+                                            "$ref": "#/definitions/response.SpendingSummaryResponse"
                                         }
                                     }
                                 }
@@ -1035,7 +1086,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1074,13 +1125,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse"
+                                            "$ref": "#/definitions/response.TransactionResponse"
                                         }
                                     }
                                 }
@@ -1090,19 +1141,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1132,13 +1183,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1148,7 +1199,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1174,13 +1225,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1209,7 +1260,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest"
+                            "$ref": "#/definitions/request.UpdateProfileRequest"
                         }
                     }
                 ],
@@ -1219,13 +1270,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1235,13 +1286,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1272,7 +1323,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest"
+                            "$ref": "#/definitions/request.UpdatePersonalizationRequest"
                         }
                     }
                 ],
@@ -1282,13 +1333,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1298,13 +1349,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1335,7 +1386,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest"
+                            "$ref": "#/definitions/request.UpdatePhoneRequest"
                         }
                     }
                 ],
@@ -1345,13 +1396,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                                    "$ref": "#/definitions/response.Base"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                                            "$ref": "#/definitions/response.UserResponse"
                                         }
                                     }
                                 }
@@ -1361,19 +1412,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base"
+                            "$ref": "#/definitions/response.Base"
                         }
                     }
                 }
@@ -1381,7 +1432,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePINRequest": {
+        "request.ChangePINRequest": {
             "type": "object",
             "required": [
                 "new_pin",
@@ -1396,7 +1447,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.ChangePasswordRequest": {
+        "request.ChangePasswordRequest": {
             "type": "object",
             "required": [
                 "new_password",
@@ -1412,7 +1463,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest": {
+        "request.CreateMerchantRequest": {
             "type": "object",
             "required": [
                 "merchant_category",
@@ -1454,7 +1505,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest": {
+        "request.CreateTransactionRequest": {
             "type": "object",
             "required": [
                 "account_id",
@@ -1523,7 +1574,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.LoginRequest": {
+        "request.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1538,7 +1589,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.RefreshTokenRequest": {
+        "request.RefreshTokenRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -1549,7 +1600,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.RegisterRequest": {
+        "request.RegisterRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -1584,7 +1635,18 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.TrackFeatureClickRequest": {
+        "request.SetPINRequest": {
+            "type": "object",
+            "required": [
+                "pin"
+            ],
+            "properties": {
+                "pin": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.TrackFeatureClickRequest": {
             "type": "object",
             "required": [
                 "feature_name"
@@ -1596,7 +1658,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest": {
+        "request.UpdateMerchantRequest": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1628,7 +1690,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest": {
+        "request.UpdatePersonalizationRequest": {
             "type": "object",
             "properties": {
                 "enabled": {
@@ -1636,7 +1698,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePhoneRequest": {
+        "request.UpdatePhoneRequest": {
             "type": "object",
             "required": [
                 "phone"
@@ -1647,7 +1709,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateProfileRequest": {
+        "request.UpdateProfileRequest": {
             "type": "object",
             "properties": {
                 "date_of_birth": {
@@ -1664,7 +1726,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base": {
+        "response.Base": {
             "type": "object",
             "properties": {
                 "data": {},
@@ -1672,14 +1734,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "meta": {
-                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta"
+                    "$ref": "#/definitions/response.Meta"
                 },
                 "success": {
                     "type": "boolean"
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse": {
+        "response.CategorySpendingResponse": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1693,7 +1755,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.FeatureClickResponse": {
+        "response.FeatureClickResponse": {
             "type": "object",
             "properties": {
                 "click_count": {
@@ -1707,7 +1769,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse": {
+        "response.MerchantResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1733,7 +1795,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse": {
+        "response.MerchantSummaryResponse": {
             "type": "object",
             "properties": {
                 "merchant_category": {
@@ -1750,7 +1812,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.Meta": {
+        "response.Meta": {
             "type": "object",
             "properties": {
                 "limit": {
@@ -1767,7 +1829,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationReasonResponse": {
+        "response.RecommendationReasonResponse": {
             "type": "object",
             "properties": {
                 "consent_status": {
@@ -1788,7 +1850,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse": {
+        "response.RecommendationResponse": {
             "type": "object",
             "properties": {
                 "description": {
@@ -1815,13 +1877,13 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.SpendingSummaryResponse": {
+        "response.SpendingSummaryResponse": {
             "type": "object",
             "properties": {
                 "category_breakdown": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.CategorySpendingResponse"
+                        "$ref": "#/definitions/response.CategorySpendingResponse"
                     }
                 },
                 "fav_category": {
@@ -1833,7 +1895,7 @@ const docTemplate = `{
                 "top_merchants": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse"
+                        "$ref": "#/definitions/response.MerchantSummaryResponse"
                     }
                 },
                 "total_spend": {
@@ -1845,12 +1907,12 @@ const docTemplate = `{
                 "weekly_comparison": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse"
+                        "$ref": "#/definitions/response.WeeklySpendingResponse"
                     }
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.TokenResponse": {
+        "response.TokenResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -1863,11 +1925,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse"
+                    "$ref": "#/definitions/response.UserResponse"
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.TransactionResponse": {
+        "response.TransactionResponse": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -1935,7 +1997,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.UserResponse": {
+        "response.UserResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -1982,7 +2044,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_GantangSatria_MyBank-BE_pkg_dto_response.WeeklySpendingResponse": {
+        "response.WeeklySpendingResponse": {
             "type": "object",
             "properties": {
                 "category": {
