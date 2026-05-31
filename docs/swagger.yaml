@@ -426,7 +426,7 @@ definitions:
       previous_week_spend:
         type: number
     type: object
-host: localhost:8080
+host: mybank-be.fly.dev
 info:
   contact: {}
   description: REST API for MyBank Application
