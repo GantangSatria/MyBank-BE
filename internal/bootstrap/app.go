@@ -58,7 +58,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	authService := service.NewAuthService(userRepo, cfg)
 	userService := service.NewUserService(userRepo)
 	txService := service.NewTransactionService(txRepo, auditRepo)
-	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo)
+	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo, cfg.App.MLServiceURL)
 	merchantService := service.NewMerchantService(merchantRepo)
 
 	// Middleware

@@ -18,8 +18,9 @@ type Config struct {
 
 type AppConfig struct {
 	Name string
-	Env  string
-	Port string
+	Env          string
+	Port         string
+	MLServiceURL string
 }
 
 type DBConfig struct {
@@ -47,9 +48,10 @@ func Load() *Config {
 
 	return &Config{
 		App: AppConfig{
-			Name: getEnv("APP_NAME", "MyBank"),
-			Env:  getEnv("APP_ENV", "development"),
-			Port: getEnv("APP_PORT", "8080"),
+			Name:         getEnv("APP_NAME", "MyBank"),
+			Env:          getEnv("APP_ENV", "development"),
+			Port:         getEnv("APP_PORT", "8080"),
+			MLServiceURL: getEnv("ML_SERVICE_URL", "http://localhost:5000"),
 		},
 		DB: DBConfig{
 			Host:     getEnv("DB_HOST", "localhost"),
