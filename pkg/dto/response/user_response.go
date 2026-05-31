@@ -31,4 +31,6 @@ type AccountResponse struct {
 	Currency      string  `json:"currency"`
 	Branch        string  `json:"branch,omitempty"`
 	IsActive      bool    `json:"is_active"`
-}
+}
+
+//tes
