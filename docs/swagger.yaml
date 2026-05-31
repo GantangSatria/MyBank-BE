@@ -21,7 +21,7 @@ definitions:
     - new_password
     - old_password
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest:
+  request.CreateMerchantRequest:
     properties:
       merchant_category:
         maxLength: 100
@@ -52,7 +52,7 @@ definitions:
     - merchant_name
     - merchant_type
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateTransactionRequest:
+  request.CreateTransactionRequest:
     properties:
       account_id:
         type: integer
@@ -146,6 +146,13 @@ definitions:
     - email
     - password
     type: object
+  request.SetPINRequest:
+    properties:
+      pin:
+        type: string
+    required:
+    - pin
+    type: object
   request.TrackFeatureClickRequest:
     properties:
       feature_name:
@@ -154,7 +161,7 @@ definitions:
     required:
     - feature_name
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest:
+  request.UpdateMerchantRequest:
     properties:
       merchant_category:
         maxLength: 100
@@ -177,7 +184,7 @@ definitions:
         - hybrid
         type: string
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdatePersonalizationRequest:
+  request.UpdatePersonalizationRequest:
     properties:
       enabled:
         type: boolean
@@ -229,7 +236,7 @@ definitions:
       last_clicked:
         type: string
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse:
+  response.MerchantResponse:
     properties:
       id:
         type: integer
@@ -246,7 +253,7 @@ definitions:
       merchant_type:
         type: string
     type: object
-  github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantSummaryResponse:
+  response.MerchantSummaryResponse:
     properties:
       merchant_category:
         type: string
@@ -525,6 +532,38 @@ paths:
       summary: Change password
       tags:
       - auth
+  /auth/pin/setup:
+    post:
+      consumes:
+      - application/json
+      description: Set user PIN for the first time
+      parameters:
+      - description: Set PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.SetPINRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Setup PIN
+      tags:
+      - auth
   /auth/refresh:
     post:
       consumes:
@@ -667,11 +706,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - $ref: '#/definitions/response.Base'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
+                    $ref: '#/definitions/response.MerchantResponse'
                   type: array
               type: object
       summary: Get all merchants
@@ -687,7 +726,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest'
+          $ref: '#/definitions/request.CreateMerchantRequest'
       produces:
       - application/json
       responses:
@@ -695,19 +734,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - $ref: '#/definitions/response.Base'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
+                  $ref: '#/definitions/response.MerchantResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
       security:
       - BearerAuth: []
       summary: Create a new merchant
@@ -730,11 +769,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
       security:
       - BearerAuth: []
       summary: Delete a merchant
@@ -755,7 +794,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest'
+          $ref: '#/definitions/request.UpdateMerchantRequest'
       produces:
       - application/json
       responses:
@@ -763,19 +802,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - $ref: '#/definitions/response.Base'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
+                  $ref: '#/definitions/response.MerchantResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
       security:
       - BearerAuth: []
       summary: Update a merchant
@@ -799,15 +838,15 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - $ref: '#/definitions/response.Base'
             - properties:
                 data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
+                  $ref: '#/definitions/response.MerchantResponse'
               type: object
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            $ref: '#/definitions/response.Base'
       summary: Get merchant by merchant_id
       tags:
       - merchants
@@ -829,195 +868,11 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
+            - $ref: '#/definitions/response.Base'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
-                  type: array
-              type: object
-      summary: Get merchants by category
-      tags:
-      - merchants
-  /recommendations:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of all merchants
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.RecommendationResponse'
-                  type: array
-              type: object
-      summary: Get all merchants
-      tags:
-      - merchants
-    post:
-      consumes:
-      - application/json
-      description: Create a new merchant entry
-      parameters:
-      - description: Create Merchant Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.CreateMerchantRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-            - properties:
-                data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-      security:
-      - BearerAuth: []
-      summary: Create a new merchant
-      tags:
-      - merchants
-  /merchants/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a merchant by ID
-      parameters:
-      - description: Merchant DB ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-      security:
-      - BearerAuth: []
-      summary: Delete a merchant
-      tags:
-      - merchants
-    put:
-      consumes:
-      - application/json
-      description: Update merchant details by ID
-      parameters:
-      - description: Merchant DB ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Update Merchant Request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_request.UpdateMerchantRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-            - properties:
-                data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-      security:
-      - BearerAuth: []
-      summary: Update a merchant
-      tags:
-      - merchants
-  /merchants/{merchant_id}:
-    get:
-      consumes:
-      - application/json
-      description: Get a single merchant by its merchant_id (e.g. M001)
-      parameters:
-      - description: Merchant ID (e.g. M001)
-        in: path
-        name: merchant_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-            - properties:
-                data:
-                  $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
-              type: object
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-      summary: Get merchant by merchant_id
-      tags:
-      - merchants
-  /merchants/category:
-    get:
-      consumes:
-      - application/json
-      description: Get all active merchants filtered by category
-      parameters:
-      - description: Merchant Category (e.g. F&B, Retail)
-        in: query
-        name: category
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.Base'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/github_com_GantangSatria_MyBank-BE_pkg_dto_response.MerchantResponse'
+                    $ref: '#/definitions/response.MerchantResponse'
                   type: array
               type: object
       summary: Get merchants by category
