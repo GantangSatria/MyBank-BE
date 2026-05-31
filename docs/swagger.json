@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "mybank-be.fly.dev",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/auth/change-pin": {

@@ -124,7 +124,6 @@ func (s *authService) Login(ctx context.Context, req *request.LoginRequest) (*re
 	return s.buildTokens(user)
 }
 
-
 func (s *authService) RefreshToken(ctx context.Context, req *request.RefreshTokenRequest) (*response.TokenResponse, error) {
 	claims := &middleware.Claims{}
 
