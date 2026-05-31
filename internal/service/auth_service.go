@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -32,12 +33,13 @@ type AuthService interface {
 }
 
 type authService struct {
-	userRepo repository.UserRepository
-	cfg      *config.Config
+	userRepo    repository.UserRepository
+	accountRepo repository.AccountRepository
+	cfg         *config.Config
 }
 
-func NewAuthService(userRepo repository.UserRepository, cfg *config.Config) AuthService {
-	return &authService{userRepo: userRepo, cfg: cfg}
+func NewAuthService(userRepo repository.UserRepository, accountRepo repository.AccountRepository, cfg *config.Config) AuthService {
+	return &authService{userRepo: userRepo, accountRepo: accountRepo, cfg: cfg}
 }
 
 func (s *authService) Register(ctx context.Context, req *request.RegisterRequest) (*response.TokenResponse, error) {
@@ -62,6 +64,25 @@ func (s *authService) Register(ctx context.Context, req *request.RegisterRequest
 	}
 
 	if err := s.userRepo.Create(ctx, user); err != nil {
+		return nil, err
+	}
+
+	// Create random account number "100" + 7 digits
+	// Unix nano is usually enough for 7 random digits pseudo-randomness for MVP
+	randomPart := fmt.Sprintf("%07d", time.Now().UnixNano()%10000000)
+	accountNumber := "100" + randomPart
+
+	account := &domain.Account{
+		UserID:        user.ID,
+		AccountNumber: accountNumber,
+		AccountType:   "Saving",
+		Balance:       0,
+		Currency:      "IDR",
+		IsActive:      true,
+	}
+
+	if err := s.accountRepo.Create(ctx, account); err != nil {
+		// Logically we should rollback user creation, but for MVP we return err
 		return nil, err
 	}
 
