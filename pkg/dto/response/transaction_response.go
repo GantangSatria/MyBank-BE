@@ -19,6 +19,7 @@ type TransactionResponse struct {
 	MerchantCategory string `json:"merchant_category,omitempty"`
 	MerchantLocation string `json:"merchant_location,omitempty"`
 
+	Channel     string `json:"channel,omitempty"`
 	Description string `json:"description,omitempty"`
 	Note        string `json:"note,omitempty"`
 
@@ -28,6 +29,7 @@ type TransactionResponse struct {
 	TransactedAt string `json:"transacted_at"`
 	CreatedAt    string `json:"created_at"`
 }
+
 
 // CategorySpendingResponse menunjukkan total spending per kategori merchant
 type CategorySpendingResponse struct {

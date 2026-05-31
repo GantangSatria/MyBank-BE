@@ -49,9 +49,11 @@ func (s *transactionService) CreateTransaction(ctx context.Context, userID uint6
 		MerchantName:             req.MerchantName,
 		MerchantCategory:         req.MerchantCategory,
 		MerchantLocation:         req.MerchantLocation,
+		Channel:                  req.Channel,
 		Description:              req.Description,
 		Note:                     req.Note,
 	}
+
 
 	if err := s.txRepo.Create(ctx, tx); err != nil {
 		return nil, err

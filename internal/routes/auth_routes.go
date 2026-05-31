@@ -13,7 +13,11 @@ func RegisterAuthRoutes(router fiber.Router,  h *handler.AuthHandler, authMiddle
 	auth.Post("/register", h.Register)
 	auth.Post("/login", h.Login)
 	auth.Post("/refresh", h.RefreshToken)
-	auth.Put("/password", h.ChangePassword)
-	auth.Put("/change-pin", h.ChangePIN)
+
+	// Protected routes
+	protected := auth.Group("", authMiddleware.Protect())
+	protected.Put("/password", h.ChangePassword)
+	protected.Put("/change-pin", h.ChangePIN)
+	protected.Post("/pin/setup", h.SetupPIN)
 
 }

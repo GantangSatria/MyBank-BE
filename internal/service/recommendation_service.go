@@ -1,9 +1,14 @@
 package service
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"log"
 	"math"
+	"net/http"
+	"time"
 
 	"github.com/GantangSatria/MyBank-BE/internal/domain"
 	"github.com/GantangSatria/MyBank-BE/internal/repository"
@@ -27,6 +32,7 @@ type recommendationService struct {
 	fcRepo      repository.FeatureClickRepository
 	userRepo    repository.UserRepository
 	auditRepo   repository.AuditLogRepository
+	mlServiceURL string
 }
 
 func NewRecommendationService(
@@ -35,13 +41,15 @@ func NewRecommendationService(
 	fcRepo repository.FeatureClickRepository,
 	userRepo repository.UserRepository,
 	auditRepo repository.AuditLogRepository,
+	mlServiceURL string,
 ) RecommendationService {
 	return &recommendationService{
 		recRepo:   recRepo,
 		txRepo:    txRepo,
-		fcRepo:    fcRepo,
-		userRepo:  userRepo,
-		auditRepo: auditRepo,
+		fcRepo:       fcRepo,
+		userRepo:     userRepo,
+		auditRepo:    auditRepo,
+		mlServiceURL: mlServiceURL,
 	}
 }
 
@@ -98,6 +106,16 @@ func (s *recommendationService) GenerateRecommendations(ctx context.Context, use
 		Action: "GENERATE_RECOMMENDATION",
 		Detail: "Menganalisis data perilaku nasabah untuk personalisasi",
 	})
+
+	// Coba generate dari ML Service terlebih dahulu
+	if s.mlServiceURL != "" {
+		err := s.generateFromMLService(ctx, userID)
+		if err == nil {
+			log.Printf("[ML Service] Successfully generated recommendations for user %d", userID)
+			return nil
+		}
+		log.Printf("[ML Service] Failed to generate recommendations: %v. Fallback to rule-based engine.", err)
+	}
 
 	priority := 1
 
@@ -183,6 +201,123 @@ func (s *recommendationService) GenerateRecommendations(ctx context.Context, use
 				IsActive:    true,
 			}
 			s.recRepo.Create(ctx, loyaltyRec)
+		}
+	}
+
+	return nil
+}
+
+func (s *recommendationService) generateFromMLService(ctx context.Context, userID uint64) error {
+	url := fmt.Sprintf("%s/recommend", s.mlServiceURL)
+	payload := map[string]interface{}{
+		"user_id": userID,
+	}
+	body, _ := json.Marshal(payload)
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewBuffer(body))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{
+		Timeout: 5 * time.Second,
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("ML service returned status %d", resp.StatusCode)
+	}
+
+	var mlResp response.MLRecommendationResponse
+	if err := json.NewDecoder(resp.Body).Decode(&mlResp); err != nil {
+		return err
+	}
+
+	// Masukkan rekomendasi ke database
+	priority := 1
+
+	// Widget 1: CF Merchant -> Rekomendasi Promo / Merchant
+	if len(mlResp.Rekomendasi.Widget1CFMerchant) > 0 {
+		for i, w := range mlResp.Rekomendasi.Widget1CFMerchant {
+			if i >= 1 { // Ambil top 1 saja
+				break
+			}
+			rec := &domain.Recommendation{
+				UserID:      userID,
+				Type:        domain.RecommendationTypePromo,
+				Title:       fmt.Sprintf("Rekomendasi Merchant: %s", w.MerchantName),
+				Description: fmt.Sprintf("Kunjungi %s dan nikmati transaksi yang lebih mudah.", w.MerchantName),
+				Reason:      w.PenjelasanXAI,
+				Priority:    priority,
+				IsActive:    true,
+			}
+			s.recRepo.Create(ctx, rec)
+			priority++
+		}
+	}
+
+	// Widget 2: CF Channel -> Rekomendasi Penggunaan Channel
+	if len(mlResp.Rekomendasi.Widget2CFChannel) > 0 {
+		for i, w := range mlResp.Rekomendasi.Widget2CFChannel {
+			if i >= 1 { // Ambil top 1 saja
+				break
+			}
+			rec := &domain.Recommendation{
+				UserID:      userID,
+				Type:        domain.RecommendationTypeProduct,
+				Title:       fmt.Sprintf("Gunakan Channel %s", w.Channel),
+				Description: fmt.Sprintf("Transaksi lebih lancar dan nyaman menggunakan %s.", w.Channel),
+				Reason:      w.PenjelasanXAI,
+				Priority:    priority,
+				IsActive:    true,
+			}
+			s.recRepo.Create(ctx, rec)
+			priority++
+		}
+	}
+
+	// Widget 3: CBF Fitur -> Rekomendasi Fitur
+	if len(mlResp.Rekomendasi.Widget3CBFFitur) > 0 {
+		for i, w := range mlResp.Rekomendasi.Widget3CBFFitur {
+			if i >= 1 { // Ambil top 1 saja
+				break
+			}
+			rec := &domain.Recommendation{
+				UserID:      userID,
+				Type:        domain.RecommendationTypeFeature,
+				Title:       fmt.Sprintf("Coba Fitur %s!", w.Feature),
+				Description: fmt.Sprintf("Anda mungkin akan menyukai fitur %s untuk membantu keuangan Anda.", w.Feature),
+				Reason:      w.PenjelasanXAI,
+				Priority:    priority,
+				IsActive:    true,
+			}
+			s.recRepo.Create(ctx, rec)
+			priority++
+		}
+	}
+
+	// Widget 4: CBF Promo -> Rekomendasi Promo Spesifik
+	if len(mlResp.Rekomendasi.Widget4CBFPromo) > 0 {
+		for i, w := range mlResp.Rekomendasi.Widget4CBFPromo {
+			if i >= 1 { // Ambil top 1 saja
+				break
+			}
+			rec := &domain.Recommendation{
+				UserID:      userID,
+				Type:        domain.RecommendationTypePromo,
+				Title:       fmt.Sprintf("Promo Spesial di %s!", w.Merchant),
+				Description: fmt.Sprintf("Jangan lewatkan penawaran spesial di %s.", w.Merchant),
+				Reason:      w.PenjelasanXAI,
+				Priority:    priority,
+				IsActive:    true,
+			}
+			s.recRepo.Create(ctx, rec)
+			priority++
 		}
 	}
 

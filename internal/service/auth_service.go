@@ -28,6 +28,7 @@ type AuthService interface {
 	RefreshToken(ctx context.Context, req *request.RefreshTokenRequest) (*response.TokenResponse, error)
 	ChangePassword(ctx context.Context, userID uint64, req *request.ChangePasswordRequest) error
 	ChangePIN(ctx context.Context, userID uint64, req *request.ChangePINRequest) error
+	SetupPIN(ctx context.Context, userID uint64, req *request.SetPINRequest) error
 }
 
 type authService struct {
@@ -215,6 +216,24 @@ func (s *authService) ChangePIN(ctx context.Context, userID uint64, req *request
 	hashed, err := bcrypt.GenerateFromPassword([]byte(req.NewPIN), 12)
 	if err != nil {
 		return apperrors.InternalServerError("gagal memproses PIN baru")
+	}
+
+	return s.userRepo.UpdatePIN(ctx, userID, string(hashed))
+}
+
+func (s *authService) SetupPIN(ctx context.Context, userID uint64, req *request.SetPINRequest) error {
+	user, err := s.userRepo.FindByIDWithPIN(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	if user.PIN != nil && *user.PIN != "" {
+		return apperrors.BadRequest("PIN sudah diatur, gunakan endpoint change PIN")
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(req.PIN), 12)
+	if err != nil {
+		return apperrors.InternalServerError("gagal memproses PIN")
 	}
 
 	return s.userRepo.UpdatePIN(ctx, userID, string(hashed))

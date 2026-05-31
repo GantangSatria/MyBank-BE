@@ -33,23 +33,25 @@ type Transaction struct {
 	Fee             float64
 	BalanceBefore   float64
 	BalanceAfter    float64
- 
+
 	DestinationAccountNumber string
 	DestinationBankCode      string
 	DestinationName          string
- 
+
+	MerchantID       *uint64
 	MerchantName     string
 	MerchantCategory string
 	MerchantLocation string
- 
+
+	Channel     string // mobile, QRIS, virtual_account, transfer
 	Description string
 	Note        string
 	FailReason  string
- 
+
 	IsRecommended    bool
 	RecommendationID *uint64
- 
+
 	TransactedAt time.Time
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
-}
+}

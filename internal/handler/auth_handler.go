@@ -159,21 +159,31 @@ func (h *AuthHandler) ChangePIN(c fiber.Ctx) error {
 	return c.JSON(response.Success("PIN berhasil diubah", nil))
 }
 
-// ChangePIN godoc
-// PUT /api/v1/auth/pin  (protected)
-// func (h *AuthHandler) ChangePIN(c fiber.Ctx) error {
-// 	userID := middleware.GetUserID(c)
+// SetupPIN godoc
+// @Summary Setup PIN
+// @Description Set user PIN for the first time
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body request.SetPINRequest true "Set PIN Request"
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 401 {object} response.Base
+// @Router /auth/pin/setup [post]
+func (h *AuthHandler) SetupPIN(c fiber.Ctx) error {
+	userID := middleware.GetUserID(c)
 
-// 	var req request.ChangePINRequest
-// 	if err := c.Bind().JSON(&req); err != nil {
-// 		return apperrors.BadRequest("body request tidak valid")
-// 	}
-// 	if err := utils.ValidateStruct(&req); err != nil {
-// 		return apperrors.BadRequest(err.Error())
-// 	}
+	var req request.SetPINRequest
+	if err := c.Bind().JSON(&req); err != nil {
+		return apperrors.BadRequest("body request tidak valid")
+	}
+	if err := utils.ValidateStruct(&req); err != nil {
+		return apperrors.BadRequest(err.Error())
+	}
 
-// 	if err := h.svc.ChangePIN(c.Context(), userID, &req); err != nil {
-// 		return err
-// 	}
-// 	return c.JSON(response.Success("PIN berhasil diubah", nil))
-// }
+	if err := h.svc.SetupPIN(c.Context(), userID, &req); err != nil {
+		return err
+	}
+	return c.JSON(response.Success("PIN berhasil diatur", nil))
+}

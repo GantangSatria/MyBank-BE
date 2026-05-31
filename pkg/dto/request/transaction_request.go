@@ -12,9 +12,11 @@ type CreateTransactionRequest struct {
 	MerchantName             string  `json:"merchant_name" validate:"omitempty,max=200"`
 	MerchantCategory         string  `json:"merchant_category" validate:"omitempty,max=100"`
 	MerchantLocation         string  `json:"merchant_location" validate:"omitempty,max=200"`
+	Channel                  string  `json:"channel" validate:"omitempty,oneof=mobile QRIS virtual_account transfer"`
 	Description              string  `json:"description" validate:"omitempty,max=255"`
 	Note                     string  `json:"note" validate:"omitempty,max=255"`
 }
+
 
 // TransactionListRequest untuk query parameter list transaksi
 type TransactionListRequest struct {

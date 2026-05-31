@@ -43,21 +43,24 @@ type rowScanner interface {
 
 const userCols = `
 	id, name, email, phone,
-	date_of_birth, occupation, segment,
+	gender, date_of_birth, occupation, marital_status, segment,
+	monthly_income_range,
 	is_personalization_enabled, is_active,
-	created_at, updated_at`
+	last_login_at, created_at, updated_at`
 
 const userColsWithPIN = `
 	id, name, email, phone, pin,
-	date_of_birth, occupation, segment,
+	gender, date_of_birth, occupation, marital_status, segment,
+	monthly_income_range,
 	is_personalization_enabled, is_active,
-	created_at, updated_at`
+	last_login_at, created_at, updated_at`
 
 const userColsWithAuth = `
 	id, name, email, phone, password, pin,
-	date_of_birth, occupation, segment,
+	gender, date_of_birth, occupation, marital_status, segment,
+	monthly_income_range,
 	is_personalization_enabled, is_active,
-	created_at, updated_at`
+	last_login_at, created_at, updated_at`
 
 func nullStrPtr(s *string) interface{} {
 	if s == nil {
@@ -75,20 +78,23 @@ func toStrPtr(ns sql.NullString) *string {
 
 func scanUser(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob sql.NullTime
-
-	var name, phone, occupation, segment sql.NullString
+	var dob, lastLogin sql.NullTime
+	var name, phone, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
 
 	err := row.Scan(
 		&u.ID,
 		&name,
 		&u.Email,
 		&phone,
+		&gender,
 		&dob,
 		&occupation,
+		&maritalStatus,
 		&segment,
+		&monthlyIncomeRange,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
+		&lastLogin,
 		&u.CreatedAt,
 		&u.UpdatedAt,
 	)
@@ -98,11 +104,17 @@ func scanUser(row rowScanner) (*domain.User, error) {
 
 	u.Name = toStrPtr(name)
 	u.Phone = toStrPtr(phone)
+	u.Gender = toStrPtr(gender)
 	u.Occupation = toStrPtr(occupation)
+	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
+	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
+	}
+	if lastLogin.Valid {
+		u.LastLoginAt = &lastLogin.Time
 	}
 
 	return &u, nil
@@ -110,9 +122,8 @@ func scanUser(row rowScanner) (*domain.User, error) {
 
 func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob sql.NullTime
-
-	var name, phone, pin, occupation, segment sql.NullString
+	var dob, lastLogin sql.NullTime
+	var name, phone, pin, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
 
 	err := row.Scan(
 		&u.ID,
@@ -120,11 +131,15 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 		&u.Email,
 		&phone,
 		&pin,
+		&gender,
 		&dob,
 		&occupation,
+		&maritalStatus,
 		&segment,
+		&monthlyIncomeRange,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
+		&lastLogin,
 		&u.CreatedAt,
 		&u.UpdatedAt,
 	)
@@ -135,11 +150,17 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	u.Name = toStrPtr(name)
 	u.Phone = toStrPtr(phone)
 	u.PIN = toStrPtr(pin)
+	u.Gender = toStrPtr(gender)
 	u.Occupation = toStrPtr(occupation)
+	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
+	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
+	}
+	if lastLogin.Valid {
+		u.LastLoginAt = &lastLogin.Time
 	}
 
 	return &u, nil
@@ -147,9 +168,8 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 
 func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob sql.NullTime
-
-	var name, phone, pin, occupation, segment sql.NullString
+	var dob, lastLogin sql.NullTime
+	var name, phone, pin, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
 
 	err := row.Scan(
 		&u.ID,
@@ -158,11 +178,15 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 		&phone,
 		&u.Password,
 		&pin,
+		&gender,
 		&dob,
 		&occupation,
+		&maritalStatus,
 		&segment,
+		&monthlyIncomeRange,
 		&u.IsPersonalizationEnabled,
 		&u.IsActive,
+		&lastLogin,
 		&u.CreatedAt,
 		&u.UpdatedAt,
 	)
@@ -173,11 +197,17 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	u.Name = toStrPtr(name)
 	u.Phone = toStrPtr(phone)
 	u.PIN = toStrPtr(pin)
+	u.Gender = toStrPtr(gender)
 	u.Occupation = toStrPtr(occupation)
+	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
+	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
+	}
+	if lastLogin.Valid {
+		u.LastLoginAt = &lastLogin.Time
 	}
 
 	return &u, nil
