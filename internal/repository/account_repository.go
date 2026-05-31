@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"log"
 
 	"github.com/GantangSatria/MyBank-BE/internal/domain"
 	apperrors "github.com/GantangSatria/MyBank-BE/pkg/errors"
@@ -25,11 +26,10 @@ func NewAccountRepository(db *sql.DB) AccountRepository {
 	return &accountRepository{db: db}
 }
 
-const accountCols = `id, user_id, account_number, account_type, balance, currency, branch, is_active, created_at, updated_at`
+const accountCols = `id, user_id, account_number, account_type, balance, currency, is_active, created_at, updated_at`
 
 func scanAccount(row interface{ Scan(dest ...interface{}) error }) (*domain.Account, error) {
 	var a domain.Account
-	var branch sql.NullString
 	err := row.Scan(
 		&a.ID,
 		&a.UserID,
@@ -37,7 +37,6 @@ func scanAccount(row interface{ Scan(dest ...interface{}) error }) (*domain.Acco
 		&a.AccountType,
 		&a.Balance,
 		&a.Currency,
-		&branch,
 		&a.IsActive,
 		&a.CreatedAt,
 		&a.UpdatedAt,
@@ -51,8 +50,8 @@ func scanAccount(row interface{ Scan(dest ...interface{}) error }) (*domain.Acco
 func (r *accountRepository) Create(ctx context.Context, a *domain.Account) error {
 	query := `
 		INSERT INTO accounts (
-			user_id, account_number, account_type, balance, currency, branch, is_active, created_at, updated_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`
+			user_id, account_number, account_type, balance, currency, is_active, created_at, updated_at
+		) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())`
 	
 	result, err := r.db.ExecContext(
 		ctx,
@@ -62,10 +61,10 @@ func (r *accountRepository) Create(ctx context.Context, a *domain.Account) error
 		a.AccountType,
 		a.Balance,
 		a.Currency,
-		nil, // branch
 		true,
 	)
 	if err != nil {
+		log.Printf("DB Error Create Account: %v", err)
 		return apperrors.InternalServerError("gagal membuat account")
 	}
 

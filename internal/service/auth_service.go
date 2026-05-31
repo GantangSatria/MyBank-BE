@@ -56,9 +56,21 @@ func (s *authService) Register(ctx context.Context, req *request.RegisterRequest
 		return nil, apperrors.InternalServerError("gagal memproses password")
 	}
 
+	var dob *time.Time
+	if req.DateOfBirth != "" {
+		parsed, err := time.Parse("2006-01-02", req.DateOfBirth)
+		if err == nil {
+			dob = &parsed
+		}
+	}
+
 	user := &domain.User{
 		Email:                    req.Email,
 		Password:                 string(hashedPassword),
+		Name:                     &req.Name,
+		Phone:                    &req.Phone,
+		Occupation:               &req.Occupation,
+		DateOfBirth:              dob,
 		IsPersonalizationEnabled: true,
 		IsActive:                 true,
 	}
