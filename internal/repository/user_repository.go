@@ -78,8 +78,9 @@ func toStrPtr(ns sql.NullString) *string {
 
 func scanUser(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob, lastLogin sql.NullTime
+	var dob, lastLogin, createdAt, updatedAt sql.NullTime
 	var name, phone, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
+	var isPersonalizationEnabled, isActive sql.NullBool
 
 	err := row.Scan(
 		&u.ID,
@@ -92,11 +93,11 @@ func scanUser(row rowScanner) (*domain.User, error) {
 		&maritalStatus,
 		&segment,
 		&monthlyIncomeRange,
-		&u.IsPersonalizationEnabled,
-		&u.IsActive,
+		&isPersonalizationEnabled,
+		&isActive,
 		&lastLogin,
-		&u.CreatedAt,
-		&u.UpdatedAt,
+		&createdAt,
+		&updatedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -109,6 +110,8 @@ func scanUser(row rowScanner) (*domain.User, error) {
 	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
 	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
+	u.IsPersonalizationEnabled = isPersonalizationEnabled.Valid && isPersonalizationEnabled.Bool
+	u.IsActive = isActive.Valid && isActive.Bool
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
@@ -116,14 +119,21 @@ func scanUser(row rowScanner) (*domain.User, error) {
 	if lastLogin.Valid {
 		u.LastLoginAt = &lastLogin.Time
 	}
+	if createdAt.Valid {
+		u.CreatedAt = createdAt.Time
+	}
+	if updatedAt.Valid {
+		u.UpdatedAt = updatedAt.Time
+	}
 
 	return &u, nil
 }
 
 func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob, lastLogin sql.NullTime
+	var dob, lastLogin, createdAt, updatedAt sql.NullTime
 	var name, phone, pin, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
+	var isPersonalizationEnabled, isActive sql.NullBool
 
 	err := row.Scan(
 		&u.ID,
@@ -137,11 +147,11 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 		&maritalStatus,
 		&segment,
 		&monthlyIncomeRange,
-		&u.IsPersonalizationEnabled,
-		&u.IsActive,
+		&isPersonalizationEnabled,
+		&isActive,
 		&lastLogin,
-		&u.CreatedAt,
-		&u.UpdatedAt,
+		&createdAt,
+		&updatedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -155,6 +165,8 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
 	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
+	u.IsPersonalizationEnabled = isPersonalizationEnabled.Valid && isPersonalizationEnabled.Bool
+	u.IsActive = isActive.Valid && isActive.Bool
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
@@ -162,14 +174,21 @@ func scanUserWithPIN(row rowScanner) (*domain.User, error) {
 	if lastLogin.Valid {
 		u.LastLoginAt = &lastLogin.Time
 	}
+	if createdAt.Valid {
+		u.CreatedAt = createdAt.Time
+	}
+	if updatedAt.Valid {
+		u.UpdatedAt = updatedAt.Time
+	}
 
 	return &u, nil
 }
 
 func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	var u domain.User
-	var dob, lastLogin sql.NullTime
+	var dob, lastLogin, createdAt, updatedAt sql.NullTime
 	var name, phone, pin, gender, occupation, maritalStatus, segment, monthlyIncomeRange sql.NullString
+	var isPersonalizationEnabled, isActive sql.NullBool
 
 	err := row.Scan(
 		&u.ID,
@@ -184,11 +203,11 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 		&maritalStatus,
 		&segment,
 		&monthlyIncomeRange,
-		&u.IsPersonalizationEnabled,
-		&u.IsActive,
+		&isPersonalizationEnabled,
+		&isActive,
 		&lastLogin,
-		&u.CreatedAt,
-		&u.UpdatedAt,
+		&createdAt,
+		&updatedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -202,12 +221,20 @@ func scanUserWithAuth(row rowScanner) (*domain.User, error) {
 	u.MaritalStatus = toStrPtr(maritalStatus)
 	u.Segment = toStrPtr(segment)
 	u.MonthlyIncomeRange = toStrPtr(monthlyIncomeRange)
+	u.IsPersonalizationEnabled = isPersonalizationEnabled.Valid && isPersonalizationEnabled.Bool
+	u.IsActive = isActive.Valid && isActive.Bool
 
 	if dob.Valid {
 		u.DateOfBirth = &dob.Time
 	}
 	if lastLogin.Valid {
 		u.LastLoginAt = &lastLogin.Time
+	}
+	if createdAt.Valid {
+		u.CreatedAt = createdAt.Time
+	}
+	if updatedAt.Valid {
+		u.UpdatedAt = updatedAt.Time
 	}
 
 	return &u, nil
@@ -439,15 +466,15 @@ func (r *userRepository) UpdatePassword(ctx context.Context, id uint64, hashedPa
 }
 
 func (r *userRepository) UpdatePhone(ctx context.Context, id uint64, u *domain.User) error {
-    q := `UPDATE users SET phone = ?, updated_at = NOW() WHERE id = ? AND deleted_at IS NULL`
-    res, err := r.db.ExecContext(ctx, q, nullStrPtr(u.Phone), id)
-    if err != nil {
-        return apperrors.InternalServerError("gagal update nomor HP")
-    }
-    if ra, _ := res.RowsAffected(); ra == 0 {
-        return apperrors.ErrUserNotFound
-    }
-    return nil
+	q := `UPDATE users SET phone = ?, updated_at = NOW() WHERE id = ? AND deleted_at IS NULL`
+	res, err := r.db.ExecContext(ctx, q, nullStrPtr(u.Phone), id)
+	if err != nil {
+		return apperrors.InternalServerError("gagal update nomor HP")
+	}
+	if ra, _ := res.RowsAffected(); ra == 0 {
+		return apperrors.ErrUserNotFound
+	}
+	return nil
 }
 
 func (r *userRepository) UpdatePersonalizationConsent(ctx context.Context, id uint64, enabled bool) error {

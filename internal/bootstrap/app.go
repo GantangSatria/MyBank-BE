@@ -48,6 +48,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 
 	// Repository
 	userRepo := repository.NewUserRepository(db)
+	accountRepo := repository.NewAccountRepository(db)
 	txRepo := repository.NewTransactionRepository(db)
 	recRepo := repository.NewRecommendationRepository(db)
 	fcRepo := repository.NewFeatureClickRepository(db)
@@ -55,9 +56,9 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	merchantRepo := repository.NewMerchantRepository(db)
 
 	// Service
-	authService := service.NewAuthService(userRepo, cfg)
+	authService := service.NewAuthService(userRepo, accountRepo, cfg)
 	userService := service.NewUserService(userRepo)
-	txService := service.NewTransactionService(txRepo, auditRepo)
+	txService := service.NewTransactionService(txRepo, auditRepo, accountRepo)
 	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo, cfg.App.MLServiceURL)
 	merchantService := service.NewMerchantService(merchantRepo)
 

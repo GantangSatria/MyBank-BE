@@ -21,28 +21,78 @@ type TransactionService interface {
 }
 
 type transactionService struct {
-	txRepo       repository.TransactionRepository
-	auditRepo    repository.AuditLogRepository
+	txRepo      repository.TransactionRepository
+	auditRepo   repository.AuditLogRepository
+	accountRepo repository.AccountRepository
 }
 
 func NewTransactionService(
 	txRepo repository.TransactionRepository,
 	auditRepo repository.AuditLogRepository,
+	accountRepo repository.AccountRepository,
 ) TransactionService {
 	return &transactionService{
-		txRepo:    txRepo,
-		auditRepo: auditRepo,
+		txRepo:      txRepo,
+		auditRepo:   auditRepo,
+		accountRepo: accountRepo,
 	}
 }
-
 func (s *transactionService) CreateTransaction(ctx context.Context, userID uint64, req *request.CreateTransactionRequest) (*response.TransactionResponse, error) {
+	// Ambil account untuk mengecek saldo
+	accountID := req.AccountID
+	if accountID == 0 {
+		account, err := s.accountRepo.FindByUserID(ctx, userID)
+		if err != nil {
+			return nil, apperrors.BadRequest("Gagal menemukan rekening user")
+		}
+		accountID = account.ID
+	}
+
+	account, err := s.accountRepo.FindByID(ctx, accountID)
+	if err != nil {
+		return nil, apperrors.BadRequest("Rekening tidak ditemukan")
+	}
+
+	balanceBefore := account.Balance
+	balanceAfter := balanceBefore
+
+	// Update balance based on transaction type
+	if req.Type == "TOPUP" {
+		err = s.accountRepo.AddBalance(ctx, accountID, req.Amount)
+		if err != nil {
+			return nil, err
+		}
+		balanceAfter += req.Amount
+	} else if req.Type == "PAYMENT" || req.Type == "TRANSFER" || req.Type == "WITHDRAW" || req.Type == "QRIS" {
+		err = s.accountRepo.SubtractBalance(ctx, accountID, req.Amount)
+		if err != nil {
+			if err.Error() == "insufficient balance" {
+				return nil, apperrors.ErrInsufficientBalance
+			}
+			return nil, err
+		}
+		balanceAfter -= req.Amount
+	} else {
+		// Asumsi selain TOPUP akan mengurangi saldo (bisa disesuaikan)
+		err = s.accountRepo.SubtractBalance(ctx, accountID, req.Amount)
+		if err != nil {
+			if err.Error() == "insufficient balance" {
+				return nil, apperrors.ErrInsufficientBalance
+			}
+			return nil, err
+		}
+		balanceAfter -= req.Amount
+	}
+
 	tx := &domain.Transaction{
 		UserID:                   userID,
-		AccountID:                req.AccountID,
+		AccountID:                accountID,
 		ReferenceNumber:          repository.GenerateRefNumber(req.Type),
 		Type:                     domain.TransactionType(req.Type),
 		Status:                   domain.TransactionStatusSuccess,
 		Amount:                   req.Amount,
+		BalanceBefore:            balanceBefore,
+		BalanceAfter:             balanceAfter,
 		DestinationAccountNumber: req.DestinationAccountNumber,
 		DestinationBankCode:      req.DestinationBankCode,
 		DestinationName:          req.DestinationName,
@@ -53,7 +103,6 @@ func (s *transactionService) CreateTransaction(ctx context.Context, userID uint6
 		Description:              req.Description,
 		Note:                     req.Note,
 	}
-
 
 	if err := s.txRepo.Create(ctx, tx); err != nil {
 		return nil, err
