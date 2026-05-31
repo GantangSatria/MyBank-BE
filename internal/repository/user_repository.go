@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/GantangSatria/MyBank-BE/internal/domain"
@@ -342,7 +343,7 @@ func (r *userRepository) FindByEmail(ctx context.Context, email string) (*domain
 		return nil, apperrors.ErrUserNotFound
 	}
 	if err != nil {
-		return nil, apperrors.InternalServerError("gagal mengambil user")
+		return nil, apperrors.InternalServerError(fmt.Sprintf("gagal mengambil user: %v", err))
 	}
 
 	return u, nil
