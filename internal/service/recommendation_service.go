@@ -67,21 +67,17 @@ func (s *recommendationService) GetRecommendations(ctx context.Context, userID u
 		return s.getGenericRecommendations(), nil
 	}
 
-	// Cek apakah sudah ada rekomendasi aktif
-	recs, err := s.recRepo.FindActiveByUserID(ctx, userID)
-	if err != nil {
+	// Nonaktifkan rekomendasi yang lama agar bisa diganti dengan yang baru (Fresh dari ML)
+	_ = s.recRepo.DeactivateAllByUserID(ctx, userID)
+
+	// Generate ulang
+	if err := s.GenerateRecommendations(ctx, userID); err != nil {
 		return nil, err
 	}
 
-	// Jika belum ada, generate
-	if len(recs) == 0 {
-		if err := s.GenerateRecommendations(ctx, userID); err != nil {
-			return nil, err
-		}
-		recs, err = s.recRepo.FindActiveByUserID(ctx, userID)
-		if err != nil {
-			return nil, err
-		}
+	recs, err := s.recRepo.FindActiveByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
 	}
 
 	// Audit log

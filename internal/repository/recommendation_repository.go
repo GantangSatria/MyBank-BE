@@ -16,6 +16,7 @@ type RecommendationRepository interface {
 	LogClick(ctx context.Context, click *domain.RecommendationClick) error
 	GetClickCount(ctx context.Context, recommendationID uint64) (int64, error)
 	GetTotalShownAndClicked(ctx context.Context, userID uint64) (int64, int64, error)
+	DeactivateAllByUserID(ctx context.Context, userID uint64) error
 }
 
 type recommendationRepository struct {
@@ -171,4 +172,13 @@ func (r *recommendationRepository) GetTotalShownAndClicked(ctx context.Context, 
 	}
 
 	return totalShown, totalClicked, nil
+}
+
+func (r *recommendationRepository) DeactivateAllByUserID(ctx context.Context, userID uint64) error {
+	q := `UPDATE recommendations SET is_active = 0 WHERE user_id = ? AND is_active = 1`
+	_, err := r.db.ExecContext(ctx, q, userID)
+	if err != nil {
+		return apperrors.InternalServerError("gagal menonaktifkan rekomendasi lama")
+	}
+	return nil
 }
