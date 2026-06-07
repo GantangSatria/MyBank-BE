@@ -33,24 +33,24 @@ const txCols = `
 	id, user_id, account_id, reference_number, type, status,
 	amount, fee, balance_before, balance_after,
 	destination_account_number, destination_bank_code, destination_name,
-	merchant_id_ref, merchant_name, merchant_category, merchant_location,
-	channel, description, note, fail_reason,
+	merchant_name, merchant_category, merchant_location,
+	description, note, fail_reason,
 	is_recommended, recommendation_id,
 	transacted_at, created_at, updated_at`
 
 func scanTransaction(row interface{ Scan(dest ...interface{}) error }) (*domain.Transaction, error) {
 	var t domain.Transaction
 	var destAccNum, destBankCode, destName sql.NullString
-	var merchName, merchCat, merchLoc, channel sql.NullString
+	var merchName, merchCat, merchLoc sql.NullString
 	var desc, note, failReason sql.NullString
-	var merchIDRef, recID sql.NullInt64
+	var recID sql.NullInt64
 
 	err := row.Scan(
 		&t.ID, &t.UserID, &t.AccountID, &t.ReferenceNumber, &t.Type, &t.Status,
 		&t.Amount, &t.Fee, &t.BalanceBefore, &t.BalanceAfter,
 		&destAccNum, &destBankCode, &destName,
-		&merchIDRef, &merchName, &merchCat, &merchLoc,
-		&channel, &desc, &note, &failReason,
+		&merchName, &merchCat, &merchLoc,
+		&desc, &note, &failReason,
 		&t.IsRecommended, &recID,
 		&t.TransactedAt, &t.CreatedAt, &t.UpdatedAt,
 	)
@@ -67,10 +67,6 @@ func scanTransaction(row interface{ Scan(dest ...interface{}) error }) (*domain.
 	if destName.Valid {
 		t.DestinationName = destName.String
 	}
-	if merchIDRef.Valid {
-		id := uint64(merchIDRef.Int64)
-		t.MerchantID = &id
-	}
 	if merchName.Valid {
 		t.MerchantName = merchName.String
 	}
@@ -79,9 +75,6 @@ func scanTransaction(row interface{ Scan(dest ...interface{}) error }) (*domain.
 	}
 	if merchLoc.Valid {
 		t.MerchantLocation = merchLoc.String
-	}
-	if channel.Valid {
-		t.Channel = channel.String
 	}
 	if desc.Valid {
 		t.Description = desc.String
@@ -102,38 +95,39 @@ func scanTransaction(row interface{ Scan(dest ...interface{}) error }) (*domain.
 
 
 func (r *transactionRepository) Create(ctx context.Context, tx *domain.Transaction) error {
+	now := time.Now()
+	tx.TransactedAt = now
+	tx.CreatedAt = now
+	tx.UpdatedAt = now
+
 	query := `
 		INSERT INTO transactions (
 			user_id, account_id, reference_number, type, status,
 			amount, fee, balance_before, balance_after,
 			destination_account_number, destination_bank_code, destination_name,
-			merchant_id_ref, merchant_name, merchant_category, merchant_location,
-			channel, description, note,
+			merchant_name, merchant_category, merchant_location,
+			description, note,
 			is_recommended, recommendation_id,
 			transacted_at, created_at, updated_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NOW())`
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	var recID interface{}
 	if tx.RecommendationID != nil {
 		recID = *tx.RecommendationID
 	}
 
-	var merchIDRef interface{}
-	if tx.MerchantID != nil {
-		merchIDRef = *tx.MerchantID
-	}
-
 	result, err := r.db.ExecContext(ctx, query,
 		tx.UserID, tx.AccountID, tx.ReferenceNumber, tx.Type, tx.Status,
 		tx.Amount, tx.Fee, tx.BalanceBefore, tx.BalanceAfter,
 		nullStr(tx.DestinationAccountNumber), nullStr(tx.DestinationBankCode), nullStr(tx.DestinationName),
-		merchIDRef, nullStr(tx.MerchantName), nullStr(tx.MerchantCategory), nullStr(tx.MerchantLocation),
-		nullStr(tx.Channel), nullStr(tx.Description), nullStr(tx.Note),
+		nullStr(tx.MerchantName), nullStr(tx.MerchantCategory), nullStr(tx.MerchantLocation),
+		nullStr(tx.Description), nullStr(tx.Note),
 		tx.IsRecommended, recID,
+		tx.TransactedAt, tx.CreatedAt, tx.UpdatedAt,
 	)
 
 	if err != nil {
-		return apperrors.InternalServerError("gagal membuat transaksi")
+		return apperrors.InternalServerError(fmt.Sprintf("gagal membuat transaksi: %v", err))
 	}
 
 	id, _ := result.LastInsertId()

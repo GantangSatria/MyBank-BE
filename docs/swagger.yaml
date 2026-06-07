@@ -21,6 +21,17 @@ definitions:
     - new_password
     - old_password
     type: object
+  request.CreateAccountRequest:
+    properties:
+      account_type:
+        enum:
+        - SAVING
+        - CHECKING
+        example: SAVING
+        type: string
+    required:
+    - account_type
+    type: object
   request.CreateMerchantRequest:
     properties:
       merchant_category:
@@ -54,51 +65,30 @@ definitions:
     type: object
   request.CreateTransactionRequest:
     properties:
-      account_id:
-        type: integer
-      amount:
-        type: number
-      channel:
-        enum:
-        - mobile
-        - QRIS
-        - virtual_account
-        - transfer
+      account_number:
+        example: "1001234567"
         type: string
+      amount:
+        example: 50000
+        type: number
       description:
+        example: Bayar hutang
         maxLength: 255
         type: string
       destination_account_number:
-        type: string
-      destination_bank_code:
-        type: string
-      destination_name:
-        type: string
-      merchant_category:
-        maxLength: 100
-        type: string
-      merchant_location:
-        maxLength: 200
-        type: string
-      merchant_name:
-        maxLength: 200
-        type: string
-      note:
-        maxLength: 255
+        example: "1007654321"
         type: string
       pin:
+        example: "123456"
         type: string
       type:
         enum:
         - TRANSFER
-        - PAYMENT
         - TOPUP
-        - WITHDRAW
-        - DEPOSIT
-        - QRIS
+        example: TRANSFER
         type: string
     required:
-    - account_id
+    - account_number
     - amount
     - pin
     - type
@@ -207,6 +197,30 @@ definitions:
       occupation:
         maxLength: 100
         type: string
+    type: object
+  response.AccountResponse:
+    properties:
+      account_number:
+        example: "1001234567"
+        type: string
+      account_type:
+        example: SAVING
+        type: string
+      balance:
+        example: 150000
+        type: number
+      created_at:
+        example: "2023-10-01T12:00:00Z"
+        type: string
+      currency:
+        example: IDR
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
     type: object
   response.Base:
     properties:
@@ -433,6 +447,70 @@ info:
   title: MyBank API
   version: "1.0"
 paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all bank accounts belonging to the logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.AccountResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get user accounts
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Create a new bank account for the logged-in user
+      parameters:
+      - description: Create Account Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.AccountResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Create a new bank account
+      tags:
+      - accounts
   /auth/change-pin:
     put:
       consumes:

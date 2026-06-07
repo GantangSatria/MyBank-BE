@@ -23,14 +23,4 @@ type UserWithAccountsResponse struct {
 	Accounts []AccountResponse `json:"accounts"`
 }
 
-type AccountResponse struct {
-	ID            uint64  `json:"id"`
-	AccountNumber string  `json:"account_number"`
-	AccountType   string  `json:"account_type"`
-	Balance       float64 `json:"balance"`
-	Currency      string  `json:"currency"`
-	Branch        string  `json:"branch,omitempty"`
-	IsActive      bool    `json:"is_active"`
-}
-
 //tes

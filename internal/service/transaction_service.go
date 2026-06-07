@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/GantangSatria/MyBank-BE/internal/domain"
 	"github.com/GantangSatria/MyBank-BE/internal/repository"
 	"github.com/GantangSatria/MyBank-BE/pkg/dto/request"
@@ -24,33 +26,43 @@ type transactionService struct {
 	txRepo      repository.TransactionRepository
 	auditRepo   repository.AuditLogRepository
 	accountRepo repository.AccountRepository
+	userRepo    repository.UserRepository
 }
 
 func NewTransactionService(
 	txRepo repository.TransactionRepository,
 	auditRepo repository.AuditLogRepository,
 	accountRepo repository.AccountRepository,
+	userRepo repository.UserRepository,
 ) TransactionService {
 	return &transactionService{
 		txRepo:      txRepo,
 		auditRepo:   auditRepo,
 		accountRepo: accountRepo,
+		userRepo:    userRepo,
 	}
 }
 func (s *transactionService) CreateTransaction(ctx context.Context, userID uint64, req *request.CreateTransactionRequest) (*response.TransactionResponse, error) {
-	// Ambil account untuk mengecek saldo
-	accountID := req.AccountID
-	if accountID == 0 {
-		account, err := s.accountRepo.FindByUserID(ctx, userID)
-		if err != nil {
-			return nil, apperrors.BadRequest("Gagal menemukan rekening user")
-		}
-		accountID = account.ID
+	// Verify user PIN
+	user, err := s.userRepo.FindByIDWithPIN(ctx, userID)
+	if err != nil {
+		return nil, apperrors.BadRequest("User tidak ditemukan")
+	}
+	if user.PIN == nil {
+		return nil, apperrors.BadRequest("PIN belum diatur")
+	}
+	if err := bcrypt.CompareHashAndPassword([]byte(*user.PIN), []byte(req.PIN)); err != nil {
+		return nil, apperrors.BadRequest("PIN salah")
 	}
 
-	account, err := s.accountRepo.FindByID(ctx, accountID)
+	// Get source account
+	account, err := s.accountRepo.FindByAccountNumber(ctx, req.AccountNumber)
 	if err != nil {
-		return nil, apperrors.BadRequest("Rekening tidak ditemukan")
+		return nil, apperrors.BadRequest("Rekening sumber tidak ditemukan")
+	}
+
+	if account.UserID != userID {
+		return nil, apperrors.Forbidden("Rekening ini bukan milik anda")
 	}
 
 	balanceBefore := account.Balance
@@ -58,13 +70,19 @@ func (s *transactionService) CreateTransaction(ctx context.Context, userID uint6
 
 	// Update balance based on transaction type
 	if req.Type == "TOPUP" {
-		err = s.accountRepo.AddBalance(ctx, accountID, req.Amount)
+		err = s.accountRepo.AddBalance(ctx, account.ID, req.Amount)
 		if err != nil {
 			return nil, err
 		}
 		balanceAfter += req.Amount
-	} else if req.Type == "PAYMENT" || req.Type == "TRANSFER" || req.Type == "WITHDRAW" || req.Type == "QRIS" {
-		err = s.accountRepo.SubtractBalance(ctx, accountID, req.Amount)
+	} else if req.Type == "TRANSFER" {
+		// Check if destination exists
+		destAccount, err := s.accountRepo.FindByAccountNumber(ctx, req.DestinationAccountNumber)
+		if err != nil {
+			return nil, apperrors.BadRequest("Rekening tujuan tidak ditemukan")
+		}
+
+		err = s.accountRepo.SubtractBalance(ctx, account.ID, req.Amount)
 		if err != nil {
 			if err.Error() == "insufficient balance" {
 				return nil, apperrors.ErrInsufficientBalance
@@ -72,21 +90,20 @@ func (s *transactionService) CreateTransaction(ctx context.Context, userID uint6
 			return nil, err
 		}
 		balanceAfter -= req.Amount
+
+		// Add to destination
+		err = s.accountRepo.AddBalance(ctx, destAccount.ID, req.Amount)
+		if err != nil {
+			// Rollback logic could be implemented here for real scenario
+			return nil, apperrors.InternalServerError("Gagal menambah saldo tujuan")
+		}
 	} else {
-		// Asumsi selain TOPUP akan mengurangi saldo (bisa disesuaikan)
-		err = s.accountRepo.SubtractBalance(ctx, accountID, req.Amount)
-		if err != nil {
-			if err.Error() == "insufficient balance" {
-				return nil, apperrors.ErrInsufficientBalance
-			}
-			return nil, err
-		}
-		balanceAfter -= req.Amount
+		return nil, apperrors.BadRequest("Tipe transaksi tidak didukung")
 	}
 
 	tx := &domain.Transaction{
 		UserID:                   userID,
-		AccountID:                accountID,
+		AccountID:                account.ID,
 		ReferenceNumber:          repository.GenerateRefNumber(req.Type),
 		Type:                     domain.TransactionType(req.Type),
 		Status:                   domain.TransactionStatusSuccess,
@@ -94,14 +111,7 @@ func (s *transactionService) CreateTransaction(ctx context.Context, userID uint6
 		BalanceBefore:            balanceBefore,
 		BalanceAfter:             balanceAfter,
 		DestinationAccountNumber: req.DestinationAccountNumber,
-		DestinationBankCode:      req.DestinationBankCode,
-		DestinationName:          req.DestinationName,
-		MerchantName:             req.MerchantName,
-		MerchantCategory:         req.MerchantCategory,
-		MerchantLocation:         req.MerchantLocation,
-		Channel:                  req.Channel,
 		Description:              req.Description,
-		Note:                     req.Note,
 	}
 
 	if err := s.txRepo.Create(ctx, tx); err != nil {
