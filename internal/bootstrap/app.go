@@ -58,9 +58,10 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	// Service
 	authService := service.NewAuthService(userRepo, accountRepo, cfg)
 	userService := service.NewUserService(userRepo)
-	txService := service.NewTransactionService(txRepo, auditRepo, accountRepo)
+	txService := service.NewTransactionService(txRepo, auditRepo, accountRepo, userRepo)
 	recService := service.NewRecommendationService(recRepo, txRepo, fcRepo, userRepo, auditRepo, cfg.App.MLServiceURL)
 	merchantService := service.NewMerchantService(merchantRepo)
+	accountService := service.NewAccountService(accountRepo)
 
 	// Middleware
 	authMiddleware := middleware.NewAuthMiddleware(cfg.JWT.Secret, userRepo, )
@@ -71,6 +72,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 	txHandler := handler.NewTransactionHandler(txService)
 	recHandler := handler.NewRecommendationHandler(recService)
 	merchantHandler := handler.NewMerchantHandler(merchantService)
+	accountHandler := handler.NewAccountHandler(accountService)
 
 	// Routes
 	routes.SetupRoutes(app, &routes.RouteConfig{
@@ -80,6 +82,7 @@ func NewApp(cfg *config.Config, db *sql.DB) *App {
 		TransactionHandler:    txHandler,
 		RecommendationHandler: recHandler,
 		MerchantHandler:       merchantHandler,
+		AccountHandler:        accountHandler,
 		AuthMiddleware:        authMiddleware,
 	})
 

@@ -14,6 +14,8 @@ type AccountRepository interface {
 	Create(ctx context.Context, account *domain.Account) error
 	FindByUserID(ctx context.Context, userID uint64) (*domain.Account, error)
 	FindByID(ctx context.Context, accountID uint64) (*domain.Account, error)
+	FindByAccountNumber(ctx context.Context, accountNumber string) (*domain.Account, error)
+	FindAllByUserID(ctx context.Context, userID uint64) ([]domain.Account, error)
 	AddBalance(ctx context.Context, accountID uint64, amount float64) error
 	SubtractBalance(ctx context.Context, accountID uint64, amount float64) error
 }
@@ -99,6 +101,44 @@ func (r *accountRepository) FindByID(ctx context.Context, accountID uint64) (*do
 		return nil, apperrors.InternalServerError("gagal mengambil data account")
 	}
 	return a, nil
+}
+
+func (r *accountRepository) FindByAccountNumber(ctx context.Context, accountNumber string) (*domain.Account, error) {
+	q := `SELECT ` + accountCols + ` FROM accounts WHERE account_number = ? AND is_active = 1`
+	row := r.db.QueryRowContext(ctx, q, accountNumber)
+
+	a, err := scanAccount(row)
+	if err == sql.ErrNoRows {
+		return nil, apperrors.ErrAccountNotFound
+	}
+	if err != nil {
+		return nil, apperrors.InternalServerError("gagal mengambil data account")
+	}
+	return a, nil
+}
+
+func (r *accountRepository) FindAllByUserID(ctx context.Context, userID uint64) ([]domain.Account, error) {
+	q := `SELECT ` + accountCols + ` FROM accounts WHERE user_id = ? AND is_active = 1 ORDER BY created_at DESC`
+	rows, err := r.db.QueryContext(ctx, q, userID)
+	if err != nil {
+		return nil, apperrors.InternalServerError("gagal mengambil daftar account")
+	}
+	defer rows.Close()
+
+	var accounts []domain.Account
+	for rows.Next() {
+		a, err := scanAccount(rows)
+		if err != nil {
+			return nil, apperrors.InternalServerError("gagal membaca data account")
+		}
+		accounts = append(accounts, *a)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, apperrors.InternalServerError("terjadi kesalahan saat membaca daftar account")
+	}
+
+	return accounts, nil
 }
 
 func (r *accountRepository) AddBalance(ctx context.Context, accountID uint64, amount float64) error {

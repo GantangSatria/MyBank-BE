@@ -15,6 +15,116 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/accounts": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a list of all bank accounts belonging to the logged-in user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Get user accounts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/response.AccountResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new bank account for the logged-in user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Create a new bank account",
+                "parameters": [
+                    {
+                        "description": "Create Account Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CreateAccountRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Base"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/response.AccountResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Base"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/change-pin": {
             "put": {
                 "security": [
@@ -1463,6 +1573,22 @@ const docTemplate = `{
                 }
             }
         },
+        "request.CreateAccountRequest": {
+            "type": "object",
+            "required": [
+                "account_type"
+            ],
+            "properties": {
+                "account_type": {
+                    "type": "string",
+                    "enum": [
+                        "SAVING",
+                        "CHECKING"
+                    ],
+                    "example": "SAVING"
+                }
+            }
+        },
         "request.CreateMerchantRequest": {
             "type": "object",
             "required": [
@@ -1508,69 +1634,40 @@ const docTemplate = `{
         "request.CreateTransactionRequest": {
             "type": "object",
             "required": [
-                "account_id",
+                "account_number",
                 "amount",
                 "pin",
                 "type"
             ],
             "properties": {
-                "account_id": {
-                    "type": "integer"
+                "account_number": {
+                    "type": "string",
+                    "example": "1001234567"
                 },
                 "amount": {
-                    "type": "number"
-                },
-                "channel": {
-                    "type": "string",
-                    "enum": [
-                        "mobile",
-                        "QRIS",
-                        "virtual_account",
-                        "transfer"
-                    ]
+                    "type": "number",
+                    "example": 50000
                 },
                 "description": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "example": "Bayar hutang"
                 },
                 "destination_account_number": {
-                    "type": "string"
-                },
-                "destination_bank_code": {
-                    "type": "string"
-                },
-                "destination_name": {
-                    "type": "string"
-                },
-                "merchant_category": {
                     "type": "string",
-                    "maxLength": 100
-                },
-                "merchant_location": {
-                    "type": "string",
-                    "maxLength": 200
-                },
-                "merchant_name": {
-                    "type": "string",
-                    "maxLength": 200
-                },
-                "note": {
-                    "type": "string",
-                    "maxLength": 255
+                    "example": "1007654321"
                 },
                 "pin": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123456"
                 },
                 "type": {
                     "type": "string",
                     "enum": [
                         "TRANSFER",
-                        "PAYMENT",
-                        "TOPUP",
-                        "WITHDRAW",
-                        "DEPOSIT",
-                        "QRIS"
-                    ]
+                        "TOPUP"
+                    ],
+                    "example": "TRANSFER"
                 }
             }
         },
@@ -1723,6 +1820,39 @@ const docTemplate = `{
                 "occupation": {
                     "type": "string",
                     "maxLength": 100
+                }
+            }
+        },
+        "response.AccountResponse": {
+            "type": "object",
+            "properties": {
+                "account_number": {
+                    "type": "string",
+                    "example": "1001234567"
+                },
+                "account_type": {
+                    "type": "string",
+                    "example": "SAVING"
+                },
+                "balance": {
+                    "type": "number",
+                    "example": 150000
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2023-10-01T12:00:00Z"
+                },
+                "currency": {
+                    "type": "string",
+                    "example": "IDR"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "is_active": {
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },

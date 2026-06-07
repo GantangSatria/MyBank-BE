@@ -17,6 +17,7 @@ type RouteConfig struct {
 	TransactionHandler    *handler.TransactionHandler
 	RecommendationHandler *handler.RecommendationHandler
 	MerchantHandler       *handler.MerchantHandler
+	AccountHandler        *handler.AccountHandler
 	AuthMiddleware        *middleware.AuthMiddleware
 }
 
@@ -41,4 +42,5 @@ func SetupRoutes(app *fiber.App, cfg *RouteConfig) {
 	RegisterTransactionRoutes(api, cfg.TransactionHandler, *cfg.AuthMiddleware)
 	RegisterRecommendationRoutes(api, cfg.RecommendationHandler, *cfg.AuthMiddleware)
 	RegisterMerchantRoutes(api, cfg.MerchantHandler, *cfg.AuthMiddleware)
+	RegisterAccountRoutes(api, cfg.AccountHandler, *cfg.AuthMiddleware)
 }
