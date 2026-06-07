@@ -3,8 +3,10 @@ definitions:
   request.ChangePINRequest:
     properties:
       new_pin:
+        example: "654321"
         type: string
       old_pin:
+        example: "123456"
         type: string
     required:
     - new_pin
@@ -13,9 +15,11 @@ definitions:
   request.ChangePasswordRequest:
     properties:
       new_password:
+        example: newsecret123
         minLength: 6
         type: string
       old_password:
+        example: secret123
         type: string
     required:
     - new_password
@@ -35,27 +39,33 @@ definitions:
   request.CreateMerchantRequest:
     properties:
       merchant_category:
+        example: F&B
         maxLength: 100
         type: string
       merchant_city:
+        example: Jakarta
         maxLength: 100
         type: string
       merchant_id:
+        example: M001
         maxLength: 20
         type: string
       merchant_name:
+        example: Kopi Kenangan
         maxLength: 200
         type: string
       merchant_status:
         enum:
         - aktif
         - nonaktif
+        example: aktif
         type: string
       merchant_type:
         enum:
         - offline
         - online
         - hybrid
+        example: offline
         type: string
     required:
     - merchant_category
@@ -96,8 +106,10 @@ definitions:
   request.LoginRequest:
     properties:
       email:
+        example: user@example.com
         type: string
       password:
+        example: secret123
         type: string
     required:
     - email
@@ -106,6 +118,7 @@ definitions:
   request.RefreshTokenRequest:
     properties:
       refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
     required:
     - refresh_token
@@ -113,22 +126,28 @@ definitions:
   request.RegisterRequest:
     properties:
       date_of_birth:
+        example: "1990-01-01"
         type: string
       email:
+        example: user@example.com
         maxLength: 100
         type: string
       name:
+        example: John Doe
         maxLength: 100
         minLength: 2
         type: string
       occupation:
+        example: Software Engineer
         maxLength: 100
         type: string
       password:
+        example: secret123
         maxLength: 100
         minLength: 6
         type: string
       phone:
+        example: "081234567890"
         maxLength: 15
         minLength: 10
         type: string
@@ -139,6 +158,7 @@ definitions:
   request.SetPINRequest:
     properties:
       pin:
+        example: "123456"
         type: string
     required:
     - pin
@@ -146,6 +166,7 @@ definitions:
   request.TrackFeatureClickRequest:
     properties:
       feature_name:
+        example: Transfer
         maxLength: 100
         type: string
     required:
@@ -154,34 +175,41 @@ definitions:
   request.UpdateMerchantRequest:
     properties:
       merchant_category:
+        example: F&B
         maxLength: 100
         type: string
       merchant_city:
+        example: Jakarta Selatan
         maxLength: 100
         type: string
       merchant_name:
+        example: Kopi Kenangan Senopati
         maxLength: 200
         type: string
       merchant_status:
         enum:
         - aktif
         - nonaktif
+        example: aktif
         type: string
       merchant_type:
         enum:
         - offline
         - online
         - hybrid
+        example: offline
         type: string
     type: object
   request.UpdatePersonalizationRequest:
     properties:
       enabled:
+        example: true
         type: boolean
     type: object
   request.UpdatePhoneRequest:
     properties:
       phone:
+        example: "+6281234567890"
         type: string
     required:
     - phone
@@ -189,12 +217,15 @@ definitions:
   request.UpdateProfileRequest:
     properties:
       date_of_birth:
+        example: "1990-01-01"
         type: string
       name:
+        example: John Doe
         maxLength: 100
         minLength: 2
         type: string
       occupation:
+        example: Software Engineer
         maxLength: 100
         type: string
     type: object
@@ -235,47 +266,64 @@ definitions:
   response.CategorySpendingResponse:
     properties:
       merchant_category:
+        example: F&B
         type: string
       total_amount:
+        example: 150000
         type: number
       transaction_count:
+        example: 3
         type: integer
     type: object
   response.FeatureClickResponse:
     properties:
       click_count:
+        example: 5
         type: integer
       feature_name:
+        example: Transfer
         type: string
       last_clicked:
+        example: "2023-10-01 12:00:00"
         type: string
     type: object
   response.MerchantResponse:
     properties:
       id:
+        example: 1
         type: integer
       merchant_category:
+        example: F&B
         type: string
       merchant_city:
+        example: Jakarta
         type: string
       merchant_id:
+        example: M001
         type: string
       merchant_name:
+        example: Kopi Kenangan
         type: string
       merchant_status:
+        example: aktif
         type: string
       merchant_type:
+        example: offline
         type: string
     type: object
   response.MerchantSummaryResponse:
     properties:
       merchant_category:
+        example: F&B
         type: string
       merchant_name:
+        example: Kopi Kenangan
         type: string
       total_amount:
+        example: 50000
         type: number
       transaction_count:
+        example: 1
         type: integer
     type: object
   response.Meta:
@@ -292,33 +340,43 @@ definitions:
   response.RecommendationReasonResponse:
     properties:
       consent_status:
+        example: true
         type: boolean
       data_used:
-        description: e.g. "Riwayat transaksi, Preferensi kategori"
+        example: Riwayat transaksi, Preferensi kategori
         type: string
       reason:
+        example: Karena Anda sering bertransaksi di E-Wallet
         type: string
       recommendation_id:
+        example: 1
         type: integer
       title:
+        example: Diskon 50%
         type: string
     type: object
   response.RecommendationResponse:
     properties:
       description:
+        example: Diskon khusus untuk Anda
         type: string
       id:
+        example: 1
         type: integer
       image_url:
+        example: https://example.com/image.jpg
         type: string
       priority:
+        example: 1
         type: integer
       reason:
-        description: 'explainable: "Karena Anda sering bertransaksi di E-Wallet"'
+        example: Karena Anda sering bertransaksi di E-Wallet
         type: string
       title:
+        example: Diskon 50%
         type: string
       type:
+        example: PROMO
         type: string
     type: object
   response.SpendingSummaryResponse:
@@ -328,16 +386,20 @@ definitions:
           $ref: '#/definitions/response.CategorySpendingResponse'
         type: array
       fav_category:
+        example: F&B
         type: string
       fav_method:
+        example: QRIS
         type: string
       top_merchants:
         items:
           $ref: '#/definitions/response.MerchantSummaryResponse'
         type: array
       total_spend:
+        example: 500000
         type: number
       total_transactions:
+        example: 10
         type: integer
       weekly_comparison:
         items:
@@ -347,10 +409,13 @@ definitions:
   response.TokenResponse:
     properties:
       access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
       expires_in:
+        example: 3600
         type: integer
       refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
       user:
         $ref: '#/definitions/response.UserResponse'
@@ -358,86 +423,124 @@ definitions:
   response.TransactionResponse:
     properties:
       amount:
+        example: 50000
         type: number
       balance_after:
+        example: 150000
         type: number
       balance_before:
+        example: 100000
         type: number
       channel:
+        example: Mobile Banking
         type: string
       created_at:
+        example: "2023-10-01 12:00:00"
         type: string
       description:
+        example: Topup saldo
         type: string
       destination_account_number:
+        example: "1007654321"
         type: string
       destination_bank_code:
+        example: BCA
         type: string
       destination_name:
+        example: John Doe
         type: string
       fee:
+        example: 0
         type: number
       id:
+        example: 1
         type: integer
       is_recommended:
+        example: false
         type: boolean
       merchant_category:
+        example: F&B
         type: string
       merchant_location:
+        example: Jakarta
         type: string
       merchant_name:
+        example: Kopi Kenangan
         type: string
       note:
+        example: Bayar hutang
         type: string
       recommendation_id:
+        example: 1
         type: integer
       reference_number:
+        example: TRX-TOPUP-1634567890
         type: string
       status:
+        example: SUCCESS
         type: string
       transacted_at:
+        example: "2023-10-01 12:00:00"
         type: string
       type:
+        example: TOPUP
         type: string
     type: object
   response.UserResponse:
     properties:
       created_at:
+        example: "2023-10-01 12:00:00"
         type: string
       date_of_birth:
+        example: "1990-01-01"
         type: string
       email:
+        example: user@example.com
         type: string
       gender:
+        example: Male
         type: string
       id:
+        example: 1
         type: integer
       is_active:
+        example: true
         type: boolean
       is_personalization_enabled:
+        example: true
         type: boolean
       last_login_at:
+        example: "2023-10-01 12:00:00"
         type: string
       marital_status:
+        example: Single
         type: string
       monthly_income_range:
+        example: 10M-20M
         type: string
       name:
+        example: John Doe
         type: string
       occupation:
+        example: Software Engineer
         type: string
       phone:
+        example: "081234567890"
         type: string
       segment:
+        example: Premium
         type: string
     type: object
   response.WeeklySpendingResponse:
     properties:
       category:
+        example: F&B
         type: string
       current_week_spend:
+        example: 150000
         type: number
       previous_week_spend:
+        example: 100000
         type: number
     type: object
 host: localhost:8080
