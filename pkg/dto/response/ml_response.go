@@ -8,9 +8,9 @@ type MLRecommendationResponse struct {
 }
 
 type MLClusterInfo struct {
-	ID         int    `json:"id"`
-	Label      string `json:"label"`
-	Penjelasan string `json:"penjelasan"`
+	ID         int    `json:"id" example:"1"`
+	Label      string `json:"label" example:"High Spender"`
+	Penjelasan string `json:"penjelasan" example:"Cluster pengguna dengan pengeluaran tinggi"`
 }
 
 type MLRecommendationData struct {
@@ -21,21 +21,21 @@ type MLRecommendationData struct {
 }
 
 type MLWidgetCFMerchant struct {
-	MerchantName  string `json:"merchant_name"`
-	PenjelasanXAI string `json:"penjelasan_xai"`
+	MerchantName  string `json:"merchant_name" example:"Kopi Kenangan"`
+	PenjelasanXAI string `json:"penjelasan_xai" example:"Berdasarkan kemiripan dengan pengguna lain"`
 }
 
 type MLWidgetCFChannel struct {
-	Channel       string `json:"channel"`
-	PenjelasanXAI string `json:"penjelasan_xai"`
+	Channel       string `json:"channel" example:"Mobile Banking"`
+	PenjelasanXAI string `json:"penjelasan_xai" example:"Berdasarkan preferensi transaksi Anda"`
 }
 
 type MLWidgetCBFFitur struct {
-	Feature       string `json:"feature"`
-	PenjelasanXAI string `json:"penjelasan_xai"`
+	Feature       string `json:"feature" example:"Transfer"`
+	PenjelasanXAI string `json:"penjelasan_xai" example:"Karena Anda sering melakukan transfer"`
 }
 
 type MLWidgetCBFPromo struct {
-	Merchant      string `json:"merchant"`
-	PenjelasanXAI string `json:"penjelasan_xai"`
+	Merchant      string `json:"merchant" example:"Kopi Kenangan"`
+	PenjelasanXAI string `json:"penjelasan_xai" example:"Diskon 50% untuk Anda"`
 }

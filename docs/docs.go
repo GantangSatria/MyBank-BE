@@ -1550,10 +1550,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "new_pin": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "654321"
                 },
                 "old_pin": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123456"
                 }
             }
         },
@@ -1566,10 +1568,12 @@ const docTemplate = `{
             "properties": {
                 "new_password": {
                     "type": "string",
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "newsecret123"
                 },
                 "old_password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "secret123"
                 }
             }
         },
@@ -1600,26 +1604,31 @@ const docTemplate = `{
             "properties": {
                 "merchant_category": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "F\u0026B"
                 },
                 "merchant_city": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "Jakarta"
                 },
                 "merchant_id": {
                     "type": "string",
-                    "maxLength": 20
+                    "maxLength": 20,
+                    "example": "M001"
                 },
                 "merchant_name": {
                     "type": "string",
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "example": "Kopi Kenangan"
                 },
                 "merchant_status": {
                     "type": "string",
                     "enum": [
                         "aktif",
                         "nonaktif"
-                    ]
+                    ],
+                    "example": "aktif"
                 },
                 "merchant_type": {
                     "type": "string",
@@ -1627,7 +1636,8 @@ const docTemplate = `{
                         "offline",
                         "online",
                         "hybrid"
-                    ]
+                    ],
+                    "example": "offline"
                 }
             }
         },
@@ -1679,10 +1689,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "user@example.com"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "secret123"
                 }
             }
         },
@@ -1693,7 +1705,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "refresh_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 }
             }
         },
@@ -1705,30 +1718,36 @@ const docTemplate = `{
             ],
             "properties": {
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1990-01-01"
                 },
                 "email": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "user@example.com"
                 },
                 "name": {
                     "type": "string",
                     "maxLength": 100,
-                    "minLength": 2
+                    "minLength": 2,
+                    "example": "John Doe"
                 },
                 "occupation": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "Software Engineer"
                 },
                 "password": {
                     "type": "string",
                     "maxLength": 100,
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "secret123"
                 },
                 "phone": {
                     "type": "string",
                     "maxLength": 15,
-                    "minLength": 10
+                    "minLength": 10,
+                    "example": "081234567890"
                 }
             }
         },
@@ -1739,7 +1758,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "pin": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "123456"
                 }
             }
         },
@@ -1751,7 +1771,8 @@ const docTemplate = `{
             "properties": {
                 "feature_name": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "Transfer"
                 }
             }
         },
@@ -1760,22 +1781,26 @@ const docTemplate = `{
             "properties": {
                 "merchant_category": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "F\u0026B"
                 },
                 "merchant_city": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "Jakarta Selatan"
                 },
                 "merchant_name": {
                     "type": "string",
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "example": "Kopi Kenangan Senopati"
                 },
                 "merchant_status": {
                     "type": "string",
                     "enum": [
                         "aktif",
                         "nonaktif"
-                    ]
+                    ],
+                    "example": "aktif"
                 },
                 "merchant_type": {
                     "type": "string",
@@ -1783,7 +1808,8 @@ const docTemplate = `{
                         "offline",
                         "online",
                         "hybrid"
-                    ]
+                    ],
+                    "example": "offline"
                 }
             }
         },
@@ -1791,7 +1817,8 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },
@@ -1802,7 +1829,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+6281234567890"
                 }
             }
         },
@@ -1810,16 +1838,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1990-01-01"
                 },
                 "name": {
                     "type": "string",
                     "maxLength": 100,
-                    "minLength": 2
+                    "minLength": 2,
+                    "example": "John Doe"
                 },
                 "occupation": {
                     "type": "string",
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "example": "Software Engineer"
                 }
             }
         },
@@ -1875,13 +1906,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "merchant_category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "total_amount": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 150000
                 },
                 "transaction_count": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 3
                 }
             }
         },
@@ -1889,13 +1923,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "click_count": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 5
                 },
                 "feature_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Transfer"
                 },
                 "last_clicked": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-10-01 12:00:00"
                 }
             }
         },
@@ -1903,25 +1940,32 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "merchant_category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "merchant_city": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jakarta"
                 },
                 "merchant_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "M001"
                 },
                 "merchant_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Kopi Kenangan"
                 },
                 "merchant_status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "aktif"
                 },
                 "merchant_type": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "offline"
                 }
             }
         },
@@ -1929,16 +1973,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "merchant_category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "merchant_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Kopi Kenangan"
                 },
                 "total_amount": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 50000
                 },
                 "transaction_count": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -1963,20 +2011,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "consent_status": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "data_used": {
-                    "description": "e.g. \"Riwayat transaksi, Preferensi kategori\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "Riwayat transaksi, Preferensi kategori"
                 },
                 "reason": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Karena Anda sering bertransaksi di E-Wallet"
                 },
                 "recommendation_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Diskon 50%"
                 }
             }
         },
@@ -1984,26 +2036,32 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Diskon khusus untuk Anda"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "image_url": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://example.com/image.jpg"
                 },
                 "priority": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "reason": {
-                    "description": "explainable: \"Karena Anda sering bertransaksi di E-Wallet\"",
-                    "type": "string"
+                    "type": "string",
+                    "example": "Karena Anda sering bertransaksi di E-Wallet"
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Diskon 50%"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "PROMO"
                 }
             }
         },
@@ -2017,10 +2075,12 @@ const docTemplate = `{
                     }
                 },
                 "fav_category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "fav_method": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "QRIS"
                 },
                 "top_merchants": {
                     "type": "array",
@@ -2029,10 +2089,12 @@ const docTemplate = `{
                     }
                 },
                 "total_spend": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 500000
                 },
                 "total_transactions": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 10
                 },
                 "weekly_comparison": {
                     "type": "array",
@@ -2046,13 +2108,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "access_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
                 "expires_in": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 3600
                 },
                 "refresh_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
                 "user": {
                     "$ref": "#/definitions/response.UserResponse"
@@ -2063,67 +2128,88 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "amount": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 50000
                 },
                 "balance_after": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 150000
                 },
                 "balance_before": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 100000
                 },
                 "channel": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Mobile Banking"
                 },
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-10-01 12:00:00"
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Topup saldo"
                 },
                 "destination_account_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1007654321"
                 },
                 "destination_bank_code": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "BCA"
                 },
                 "destination_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                 },
                 "fee": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 0
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "is_recommended": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": false
                 },
                 "merchant_category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "merchant_location": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jakarta"
                 },
                 "merchant_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Kopi Kenangan"
                 },
                 "note": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Bayar hutang"
                 },
                 "recommendation_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "reference_number": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "TRX-TOPUP-1634567890"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "SUCCESS"
                 },
                 "transacted_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-10-01 12:00:00"
                 },
                 "type": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "TOPUP"
                 }
             }
         },
@@ -2131,46 +2217,60 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-10-01 12:00:00"
                 },
                 "date_of_birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1990-01-01"
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "user@example.com"
                 },
                 "gender": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Male"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "is_active": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "is_personalization_enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "last_login_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2023-10-01 12:00:00"
                 },
                 "marital_status": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Single"
                 },
                 "monthly_income_range": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "10M-20M"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John Doe"
                 },
                 "occupation": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Software Engineer"
                 },
                 "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "081234567890"
                 },
                 "segment": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Premium"
                 }
             }
         },
@@ -2178,13 +2278,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "F\u0026B"
                 },
                 "current_week_spend": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 150000
                 },
                 "previous_week_spend": {
-                    "type": "number"
+                    "type": "number",
+                    "example": 100000
                 }
             }
         }
