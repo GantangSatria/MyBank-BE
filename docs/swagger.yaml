@@ -1,0 +1,1473 @@
+basePath: /api/v1
+definitions:
+  request.ChangePINRequest:
+    properties:
+      new_pin:
+        example: "654321"
+        type: string
+      old_pin:
+        example: "123456"
+        type: string
+    required:
+    - new_pin
+    - old_pin
+    type: object
+  request.ChangePasswordRequest:
+    properties:
+      new_password:
+        example: newsecret123
+        minLength: 6
+        type: string
+      old_password:
+        example: secret123
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
+  request.CreateAccountRequest:
+    properties:
+      account_type:
+        enum:
+        - SAVING
+        - CHECKING
+        example: SAVING
+        type: string
+    required:
+    - account_type
+    type: object
+  request.CreateMerchantRequest:
+    properties:
+      merchant_category:
+        example: F&B
+        maxLength: 100
+        type: string
+      merchant_city:
+        example: Jakarta
+        maxLength: 100
+        type: string
+      merchant_id:
+        example: M001
+        maxLength: 20
+        type: string
+      merchant_name:
+        example: Kopi Kenangan
+        maxLength: 200
+        type: string
+      merchant_status:
+        enum:
+        - aktif
+        - nonaktif
+        example: aktif
+        type: string
+      merchant_type:
+        enum:
+        - offline
+        - online
+        - hybrid
+        example: offline
+        type: string
+    required:
+    - merchant_category
+    - merchant_id
+    - merchant_name
+    - merchant_type
+    type: object
+  request.CreateTransactionRequest:
+    properties:
+      account_number:
+        example: "1001234567"
+        type: string
+      amount:
+        example: 50000
+        type: number
+      description:
+        example: Bayar hutang
+        maxLength: 255
+        type: string
+      destination_account_number:
+        example: "1007654321"
+        type: string
+      pin:
+        example: "123456"
+        type: string
+      type:
+        enum:
+        - TRANSFER
+        - TOPUP
+        example: TRANSFER
+        type: string
+    required:
+    - account_number
+    - amount
+    - pin
+    - type
+    type: object
+  request.LoginRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      password:
+        example: secret123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    required:
+    - refresh_token
+    type: object
+  request.RegisterRequest:
+    properties:
+      date_of_birth:
+        example: "1990-01-01"
+        type: string
+      email:
+        example: user@example.com
+        maxLength: 100
+        type: string
+      name:
+        example: John Doe
+        maxLength: 100
+        minLength: 2
+        type: string
+      occupation:
+        example: Software Engineer
+        maxLength: 100
+        type: string
+      password:
+        example: secret123
+        maxLength: 100
+        minLength: 6
+        type: string
+      phone:
+        example: "081234567890"
+        maxLength: 15
+        minLength: 10
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.SetPINRequest:
+    properties:
+      pin:
+        example: "123456"
+        type: string
+    required:
+    - pin
+    type: object
+  request.TrackFeatureClickRequest:
+    properties:
+      feature_name:
+        example: Transfer
+        maxLength: 100
+        type: string
+    required:
+    - feature_name
+    type: object
+  request.UpdateMerchantRequest:
+    properties:
+      merchant_category:
+        example: F&B
+        maxLength: 100
+        type: string
+      merchant_city:
+        example: Jakarta Selatan
+        maxLength: 100
+        type: string
+      merchant_name:
+        example: Kopi Kenangan Senopati
+        maxLength: 200
+        type: string
+      merchant_status:
+        enum:
+        - aktif
+        - nonaktif
+        example: aktif
+        type: string
+      merchant_type:
+        enum:
+        - offline
+        - online
+        - hybrid
+        example: offline
+        type: string
+    type: object
+  request.UpdatePersonalizationRequest:
+    properties:
+      enabled:
+        example: true
+        type: boolean
+    type: object
+  request.UpdatePhoneRequest:
+    properties:
+      phone:
+        example: "+6281234567890"
+        type: string
+    required:
+    - phone
+    type: object
+  request.UpdateProfileRequest:
+    properties:
+      date_of_birth:
+        example: "1990-01-01"
+        type: string
+      name:
+        example: John Doe
+        maxLength: 100
+        minLength: 2
+        type: string
+      occupation:
+        example: Software Engineer
+        maxLength: 100
+        type: string
+    type: object
+  response.AccountResponse:
+    properties:
+      account_number:
+        example: "1001234567"
+        type: string
+      account_type:
+        example: SAVING
+        type: string
+      balance:
+        example: 150000
+        type: number
+      created_at:
+        example: "2023-10-01T12:00:00Z"
+        type: string
+      currency:
+        example: IDR
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
+    type: object
+  response.Base:
+    properties:
+      data: {}
+      message:
+        type: string
+      meta:
+        $ref: '#/definitions/response.Meta'
+      success:
+        type: boolean
+    type: object
+  response.CategorySpendingResponse:
+    properties:
+      merchant_category:
+        example: F&B
+        type: string
+      total_amount:
+        example: 150000
+        type: number
+      transaction_count:
+        example: 3
+        type: integer
+    type: object
+  response.FeatureClickResponse:
+    properties:
+      click_count:
+        example: 5
+        type: integer
+      feature_name:
+        example: Transfer
+        type: string
+      last_clicked:
+        example: "2023-10-01 12:00:00"
+        type: string
+    type: object
+  response.MerchantResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+      merchant_category:
+        example: F&B
+        type: string
+      merchant_city:
+        example: Jakarta
+        type: string
+      merchant_id:
+        example: M001
+        type: string
+      merchant_name:
+        example: Kopi Kenangan
+        type: string
+      merchant_status:
+        example: aktif
+        type: string
+      merchant_type:
+        example: offline
+        type: string
+    type: object
+  response.MerchantSummaryResponse:
+    properties:
+      merchant_category:
+        example: F&B
+        type: string
+      merchant_name:
+        example: Kopi Kenangan
+        type: string
+      total_amount:
+        example: 50000
+        type: number
+      transaction_count:
+        example: 1
+        type: integer
+    type: object
+  response.Meta:
+    properties:
+      limit:
+        type: integer
+      page:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  response.RecommendationReasonResponse:
+    properties:
+      consent_status:
+        example: true
+        type: boolean
+      data_used:
+        example: Riwayat transaksi, Preferensi kategori
+        type: string
+      reason:
+        example: Karena Anda sering bertransaksi di E-Wallet
+        type: string
+      recommendation_id:
+        example: 1
+        type: integer
+      title:
+        example: Diskon 50%
+        type: string
+    type: object
+  response.RecommendationResponse:
+    properties:
+      description:
+        example: Diskon khusus untuk Anda
+        type: string
+      id:
+        example: 1
+        type: integer
+      image_url:
+        example: https://example.com/image.jpg
+        type: string
+      priority:
+        example: 1
+        type: integer
+      reason:
+        example: Karena Anda sering bertransaksi di E-Wallet
+        type: string
+      title:
+        example: Diskon 50%
+        type: string
+      type:
+        example: PROMO
+        type: string
+    type: object
+  response.SpendingSummaryResponse:
+    properties:
+      category_breakdown:
+        items:
+          $ref: '#/definitions/response.CategorySpendingResponse'
+        type: array
+      fav_category:
+        example: F&B
+        type: string
+      fav_method:
+        example: QRIS
+        type: string
+      top_merchants:
+        items:
+          $ref: '#/definitions/response.MerchantSummaryResponse'
+        type: array
+      total_spend:
+        example: 500000
+        type: number
+      total_transactions:
+        example: 10
+        type: integer
+      weekly_comparison:
+        items:
+          $ref: '#/definitions/response.WeeklySpendingResponse'
+        type: array
+    type: object
+  response.TokenResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_in:
+        example: 3600
+        type: integer
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/response.UserResponse'
+    type: object
+  response.TransactionResponse:
+    properties:
+      amount:
+        example: 50000
+        type: number
+      balance_after:
+        example: 150000
+        type: number
+      balance_before:
+        example: 100000
+        type: number
+      channel:
+        example: Mobile Banking
+        type: string
+      created_at:
+        example: "2023-10-01 12:00:00"
+        type: string
+      description:
+        example: Topup saldo
+        type: string
+      destination_account_number:
+        example: "1007654321"
+        type: string
+      destination_bank_code:
+        example: BCA
+        type: string
+      destination_name:
+        example: John Doe
+        type: string
+      fee:
+        example: 0
+        type: number
+      id:
+        example: 1
+        type: integer
+      is_recommended:
+        example: false
+        type: boolean
+      merchant_category:
+        example: F&B
+        type: string
+      merchant_location:
+        example: Jakarta
+        type: string
+      merchant_name:
+        example: Kopi Kenangan
+        type: string
+      note:
+        example: Bayar hutang
+        type: string
+      recommendation_id:
+        example: 1
+        type: integer
+      reference_number:
+        example: TRX-TOPUP-1634567890
+        type: string
+      status:
+        example: SUCCESS
+        type: string
+      transacted_at:
+        example: "2023-10-01 12:00:00"
+        type: string
+      type:
+        example: TOPUP
+        type: string
+    type: object
+  response.UserResponse:
+    properties:
+      created_at:
+        example: "2023-10-01 12:00:00"
+        type: string
+      date_of_birth:
+        example: "1990-01-01"
+        type: string
+      email:
+        example: user@example.com
+        type: string
+      gender:
+        example: Male
+        type: string
+      id:
+        example: 1
+        type: integer
+      is_active:
+        example: true
+        type: boolean
+      is_personalization_enabled:
+        example: true
+        type: boolean
+      last_login_at:
+        example: "2023-10-01 12:00:00"
+        type: string
+      marital_status:
+        example: Single
+        type: string
+      monthly_income_range:
+        example: 10M-20M
+        type: string
+      name:
+        example: John Doe
+        type: string
+      occupation:
+        example: Software Engineer
+        type: string
+      phone:
+        example: "081234567890"
+        type: string
+      segment:
+        example: Premium
+        type: string
+    type: object
+  response.WeeklySpendingResponse:
+    properties:
+      category:
+        example: F&B
+        type: string
+      current_week_spend:
+        example: 150000
+        type: number
+      previous_week_spend:
+        example: 100000
+        type: number
+    type: object
+host: mybank-be.fly.dev
+info:
+  contact: {}
+  description: REST API for MyBank Application
+  title: MyBank API
+  version: "1.0"
+paths:
+  /accounts:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all bank accounts belonging to the logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.AccountResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get user accounts
+      tags:
+      - accounts
+    post:
+      consumes:
+      - application/json
+      description: Create a new bank account for the logged-in user
+      parameters:
+      - description: Create Account Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateAccountRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.AccountResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Create a new bank account
+      tags:
+      - accounts
+  /auth/change-pin:
+    put:
+      consumes:
+      - application/json
+      description: Change user PIN
+      parameters:
+      - description: Change PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangePINRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Change PIN
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return access & refresh tokens
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      summary: Login user
+      tags:
+      - auth
+  /auth/password:
+    put:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: Change Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Change password
+      tags:
+      - auth
+  /auth/pin/setup:
+    post:
+      consumes:
+      - application/json
+      description: Set user PIN for the first time
+      parameters:
+      - description: Set PIN Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.SetPINRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Setup PIN
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get a new access token using a refresh token
+      parameters:
+      - description: Refresh Token Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      summary: Refresh access token
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with email and password
+      parameters:
+      - description: Register Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.Base'
+      summary: Register a new user
+      tags:
+      - auth
+  /features/click:
+    post:
+      consumes:
+      - application/json
+      description: Record a user's click on a mobile banking feature
+      parameters:
+      - description: Feature Click Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.TrackFeatureClickRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Track feature click
+      tags:
+      - features
+  /features/clicks:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all features clicked by the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.FeatureClickResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get feature clicks
+      tags:
+      - features
+  /merchants:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all merchants
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.MerchantResponse'
+                  type: array
+              type: object
+      summary: Get all merchants
+      tags:
+      - merchants
+    post:
+      consumes:
+      - application/json
+      description: Create a new merchant entry
+      parameters:
+      - description: Create Merchant Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateMerchantRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.MerchantResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Create a new merchant
+      tags:
+      - merchants
+  /merchants/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a merchant by ID
+      parameters:
+      - description: Merchant DB ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Delete a merchant
+      tags:
+      - merchants
+    put:
+      consumes:
+      - application/json
+      description: Update merchant details by ID
+      parameters:
+      - description: Merchant DB ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Merchant Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateMerchantRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.MerchantResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update a merchant
+      tags:
+      - merchants
+  /merchants/{merchant_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single merchant by its merchant_id (e.g. M001)
+      parameters:
+      - description: Merchant ID (e.g. M001)
+        in: path
+        name: merchant_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.MerchantResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Base'
+      summary: Get merchant by merchant_id
+      tags:
+      - merchants
+  /merchants/category:
+    get:
+      consumes:
+      - application/json
+      description: Get all active merchants filtered by category
+      parameters:
+      - description: Merchant Category (e.g. F&B, Retail)
+        in: query
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.MerchantResponse'
+                  type: array
+              type: object
+      summary: Get merchants by category
+      tags:
+      - merchants
+  /recommendations:
+    get:
+      consumes:
+      - application/json
+      description: Get personalized recommendations for the logged-in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.RecommendationResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get user recommendations
+      tags:
+      - recommendations
+  /recommendations/{id}/click:
+    post:
+      consumes:
+      - application/json
+      description: Record a click on a specific recommendation
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Track recommendation click
+      tags:
+      - recommendations
+  /recommendations/{id}/reason:
+    get:
+      consumes:
+      - application/json
+      description: Get the reason why a specific recommendation was shown to the user
+      parameters:
+      - description: Recommendation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.RecommendationReasonResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get recommendation reason
+      tags:
+      - recommendations
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: Get a paginated list of transactions for the logged-in user
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/response.TransactionResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get transactions
+      tags:
+      - transactions
+    post:
+      consumes:
+      - application/json
+      description: Create a new transaction (transfer, payment, topup, withdraw, deposit,
+        qris)
+      parameters:
+      - description: Create Transaction Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.CreateTransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.TransactionResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Create a new transaction
+      tags:
+      - transactions
+  /transactions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get details of a specific transaction by ID
+      parameters:
+      - description: Transaction ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.TransactionResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get transaction detail
+      tags:
+      - transactions
+  /transactions/summary:
+    get:
+      consumes:
+      - application/json
+      description: Get a summary of user spending including total spend, favourite
+        category, weekly comparisons, and top merchants
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.SpendingSummaryResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get spending summary
+      tags:
+      - transactions
+  /users/me:
+    delete:
+      consumes:
+      - application/json
+      description: Soft deletes the currently logged in user account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Soft delete user account
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Get profile of the currently logged in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Update profile details of the currently logged in user
+      parameters:
+      - description: Update Profile Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - users
+  /users/me/personalization:
+    patch:
+      consumes:
+      - application/json
+      description: Enable or disable data personalization for the user
+      parameters:
+      - description: Update Personalization Consent Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePersonalizationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update personalization consent
+      tags:
+      - users
+  /users/me/phone:
+    patch:
+      consumes:
+      - application/json
+      description: Update phone number of the currently logged in user
+      parameters:
+      - description: Update Phone Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePhoneRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Base'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Base'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Base'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.Base'
+      security:
+      - BearerAuth: []
+      summary: Update user phone number
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

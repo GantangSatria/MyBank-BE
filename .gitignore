@@ -1,0 +1,12 @@
+*.exe
+*.dll
+*.so
+*.dylib
+
+*.test
+*.out
+
+.env
+.env*
+config/*.json
+docs/
